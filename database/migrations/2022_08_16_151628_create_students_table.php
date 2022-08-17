@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('avatar');
-            $table->tinyInteger('gender')->nullable();
+            $table->unsignedTinyInteger('gender')->nullable();
             $table->string('address');
             $table->date('birthday');
             $table->unsignedBigInteger('faculty_id')->nullable();
