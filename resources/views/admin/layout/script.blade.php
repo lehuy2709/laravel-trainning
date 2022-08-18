@@ -1,4 +1,6 @@
-{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <!-- jQuery -->
 <script src="{{ asset('dist/admin/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->

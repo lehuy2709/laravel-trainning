@@ -8,3 +8,4 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{{ asset('dist/admin/css/adminlte.min.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+<script src="{{ asset('dist/admin/js/ajax/jquery-3.6.0.min.js') }}"></script>

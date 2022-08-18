@@ -7,6 +7,8 @@ interface RepositoryInterface
 
     public function getAll();
 
+    public function Paginate();
+
     public function find($id);
 
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FacultyRequest;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class FacultyController extends Controller
 {
@@ -14,82 +16,54 @@ class FacultyController extends Controller
     {
         $this->facultyRepo = $facultyRepo;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return view('admin.faculty.index');
+        $faculties = $this->facultyRepo->Paginate(5);
+        return view('admin.faculty.index', compact('faculties'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
+
         return view('admin.faculty.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(FacultyRequest $request)
     {
-        //
         $this->facultyRepo->create($request->all());
+        Session::flash('success', 'Faculty has been created successfully.');
         return redirect()->route('faculties.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+        $faculty = $this->facultyRepo->find($id);
+
+        return view('admin.faculty.edit', compact('faculty'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(FacultyRequest $request, $id)
     {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        $data = $request->all();
+        $this->facultyRepo->update($id, $data);
+        Session::flash('success', 'Faculty has successfully updated.');
+        return redirect()->route('faculties.index');
+
+    }
     public function destroy($id)
     {
-        //
+        $this->facultyRepo->delete($id);
+        return redirect()->route('faculties.index');
     }
 }
