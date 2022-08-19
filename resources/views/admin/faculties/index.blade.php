@@ -5,7 +5,7 @@
 @section('content-title', 'Manage Faculty')
 
 @section('content')
-@include('admin.layout.alert')
+    @include('admin.layout.alert')
     <div>
         <a href="{{ Route('faculties.create') }}" class="btn btn-success" style="margin-bottom:20px;">Create</a>
     </div>

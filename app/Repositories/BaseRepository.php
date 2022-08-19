@@ -37,6 +37,11 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->Paginate(5);
     }
 
+    public function getLatestRecord()
+    {
+        return $this->model->orderByRaw("updated_at DESC, created_at DESC");
+    }
+
     public function find($id)
     {
         $result = $this->model->find($id);

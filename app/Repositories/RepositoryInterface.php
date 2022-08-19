@@ -9,6 +9,8 @@ interface RepositoryInterface
 
     public function Paginate();
 
+    public function getLatestRecord();
+
     public function find($id);
 
 

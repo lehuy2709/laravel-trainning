@@ -5,13 +5,13 @@
 @section('content-title', 'Create Faculty')
 
 @section('content')
-@include('admin.layout.alert')
-    {{ Form::open(['route' => 'faculties.store', 'method' => 'post']) }}
+    @include('admin.layout.alert')
+    {{ Form::model($faculties,['route' => 'faculties.store', 'method' => 'post']) }}
 
 
     <div class="form-group">
         <label for="exampleInputEmail1">Name</label>
-        {!! Form::text('name', old('name'), ['class' => 'form-control','placeholder' => 'Enter Name']) !!}
+        {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Enter Name']) !!}
     </div>
 
 

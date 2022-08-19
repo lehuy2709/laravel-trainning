@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
+use App\Models\Faculty;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -19,15 +20,15 @@ class FacultyController extends Controller
 
     public function index()
     {
-        $faculties = $this->facultyRepo->Paginate(5);
-        return view('admin.faculty.index', compact('faculties'));
+        $faculties = $this->facultyRepo->getLatestRecord()->Paginate(5);
+        return view('admin.faculties.index', compact('faculties'));
     }
 
     public function create()
     {
         //
-
-        return view('admin.faculty.create');
+        $faculties = new Faculty();
+        return view('admin.faculties.create',compact('faculties'));
     }
 
 
@@ -48,7 +49,7 @@ class FacultyController extends Controller
     {
         $faculty = $this->facultyRepo->find($id);
 
-        return view('admin.faculty.edit', compact('faculty'));
+        return view('admin.faculties.edit', compact('faculty'));
     }
 
 
@@ -59,7 +60,6 @@ class FacultyController extends Controller
         $this->facultyRepo->update($id, $data);
         Session::flash('success', 'Faculty has successfully updated.');
         return redirect()->route('faculties.index');
-
     }
     public function destroy($id)
     {

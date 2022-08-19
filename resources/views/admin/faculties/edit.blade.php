@@ -5,7 +5,7 @@
 @section('content-title', 'Edit Faculty')
 
 @section('content')
-@include('admin.layout.alert')
+    @include('admin.layout.alert')
     {!! Form::model($faculty, ['route' => ['faculties.update', $faculty->id], 'method' => 'PUT']) !!}
 
 

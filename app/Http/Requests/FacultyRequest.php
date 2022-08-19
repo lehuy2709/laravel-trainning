@@ -25,7 +25,7 @@ class FacultyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:faculties|min:10',
+            'name' => 'required|unique:faculties|min:10|max:30',
         ];
     }
 
@@ -34,7 +34,8 @@ class FacultyRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'name.unique' => 'Faculty name already exists',
-            'name.min' => 'Faculty name at least 10 characters'
+            'name.min' => 'Faculty name at least 10 characters',
+            'name.max' => 'Faculty name up to 30 characters'
         ];
     }
 }
