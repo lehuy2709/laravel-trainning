@@ -57,7 +57,13 @@
                         <li class="nav-item">
                             <a href="{{Route('faculties.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Faculty</p>
+                                <p>Faculties</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{Route('subjects.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Subjects</p>
                             </a>
                         </li>
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,5 +19,6 @@ Route::get('/', function () {
     return view('admin.dashboard.index');
 });
 Route::resources([
-    'faculties'=>FacultyController::class,
+    'faculties' => FacultyController::class,
+    'subjects' => SubjectController::class,
 ]);
