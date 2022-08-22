@@ -2,26 +2,26 @@
 
 @section('title', 'Create Faculty')
 
-@section('content-title', 'Create Faculty')
+@section('content-title', isset($id) ? 'Update Faculty' : 'Create Faculty')
 
 @section('content')
     @include('admin.layout.alert')
-    {{ Form::model($faculties,['route' => 'faculties.store', 'method' => 'post']) }}
 
+    @if (isset($id))
+        {{ Form::model($faculty, ['route' => ['faculties.update', $id], 'method' => 'PUT']) }}
+    @else
+        {{ Form::model($faculty, ['route' => 'faculties.store', 'method' => 'post']) }}
+    @endif
 
     <div class="form-group">
-        <label for="exampleInputEmail1">Name</label>
-        {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Enter Name']) !!}
+        {{ Form::label('name', 'Faculty Name') }}
+        {{ Form::text('name', $faculty->name, ['class' => 'form-control', 'placeholder' => 'Enter Name']) }}
     </div>
-
 
     <div style="margin-bottom:20px">
-        {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
-        <a href="{{ Route('faculties.index') }}" class="btn btn-info">Back</a>
+        {{ Form::submit(isset($id)? 'Save' : 'Create', ['class' => 'btn btn-primary']) }}
+        <a href="{{ Route('faculties.index') }}" class="btn btn-default">Back</a>
     </div>
 
-    {!! Form::close() !!}
-
-
-
+    {{ Form::close() }}
 @endsection

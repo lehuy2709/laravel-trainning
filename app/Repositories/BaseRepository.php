@@ -3,24 +3,19 @@
 namespace App\Repositories;
 
 use App\Repositories\RepositoryInterface;
+use PhpParser\Node\Expr\FuncCall;
 
 abstract class BaseRepository implements RepositoryInterface
 {
-    //model muốn tương tác
     protected $model;
 
-    //khởi tạo
     public function __construct()
     {
         $this->setModel();
     }
 
-    //lấy model tương ứng
     abstract public function getModel();
 
-    /**
-     * Set model
-     */
     public function setModel()
     {
         $this->model = app()->make(
@@ -28,10 +23,16 @@ abstract class BaseRepository implements RepositoryInterface
         );
     }
 
+    public function newModel()
+    {
+        return new $this->model;
+    }
+
     public function getAll()
     {
         return $this->model->all();
     }
+
     public function Paginate()
     {
         return $this->model->Paginate(5);
@@ -40,6 +41,21 @@ abstract class BaseRepository implements RepositoryInterface
     public function getLatestRecord()
     {
         return $this->model->orderByRaw("updated_at DESC, created_at DESC");
+    }
+
+    public function pluck($attributes = [])
+    {
+        return $this->model->pluck($attributes);
+    }
+
+    public function with($attributes = [])
+    {
+        return $this->model->with($attributes);
+    }
+
+    public function select($attributes = [])
+    {
+        return $this->model->select($attributes);
     }
 
     public function find($id)

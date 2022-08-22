@@ -11,7 +11,7 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
         return Subject::class;
     }
 
-    public function newFaculty()
+    public function newSubject()
     {
         return new $this->model;
     }

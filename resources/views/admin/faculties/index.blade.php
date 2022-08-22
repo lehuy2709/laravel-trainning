@@ -5,10 +5,13 @@
 @section('content-title', 'Manage Faculty')
 
 @section('content')
+
     @include('admin.layout.alert')
+
     <div>
-        <a href="{{ Route('faculties.create') }}" class="btn btn-success" style="margin-bottom:20px;">Create</a>
+        <a href="{{ Route('faculties.create') }}" class="btn btn-success btn-sm" style="margin-bottom:20px;"><i class="fa fa-plus"></i></a>
     </div>
+
     <table class='table'>
         <thead>
             <tr>
@@ -23,24 +26,20 @@
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->name }}</td>
                     <td style="display: flex; gap:10px;">
-                        {{-- {!! Form::model($item, ['route' => ['faculties.destroy', $item->id], 'method' => 'DELETE']) !!} --}}
-                        {!! Form::button('Delete', ['class' => 'btn btn-danger', 'id' => 'delete', 'data' => $item->id]) !!}
-                        {{-- {!! Form::close() !!} --}}
                         <div>
-                            <a href="{{ Route('faculties.edit', $item->id) }}" class="btn btn-info">Edit</a>
+                            <a href="{{ Route('faculties.edit', $item->id) }}" class="btn btn-info btn-sm"><i  class="fa fa-edit"></i></a>
                         </div>
-
-
+                        {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
                     </td>
                 </tr>
             @endforeach
-
-
         </tbody>
     </table>
+
     <div>
         {!! $faculties->links() !!}
     </div>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>

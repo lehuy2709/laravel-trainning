@@ -10,4 +10,4 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/admin/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('dist/admin/js/demo.js') }}"></script>
+

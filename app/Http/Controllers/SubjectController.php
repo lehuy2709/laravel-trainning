@@ -50,7 +50,6 @@ class SubjectController extends Controller
     {
 
         $subject = $this->subjectRepo->find($id);
-
         return view('admin.subjects.edit', compact('subject'));
     }
 

@@ -24,18 +24,14 @@ class FacultyRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $data = [
             'name' => 'required|unique:faculties|min:10|max:30',
         ];
-    }
 
-    public function messages()
-    {
-        return [
-            'name.required' => 'Name is required',
-            'name.unique' => 'Faculty name already exists',
-            'name.min' => 'Faculty name at least 10 characters',
-            'name.max' => 'Faculty name up to 30 characters'
-        ];
+        if ($this->route('faculty')) {
+            $data['name'] = 'required|min:10|max:30|unique:faculties,id,' . $this->route('faculty');
+        }
+        
+        return $data;
     }
 }

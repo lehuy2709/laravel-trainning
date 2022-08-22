@@ -66,6 +66,12 @@
                                 <p>Subjects</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{Route('students.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Students</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
@@ -73,7 +79,7 @@
                     <a href="" class="nav-link">
                         <i class="nav-icon fa fa-asterisk"></i>
                         <p>
-                            Đăng xuất
+                            Sign Out
                         </p>
                     </a>
                 </li>

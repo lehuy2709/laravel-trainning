@@ -40,13 +40,19 @@
 
         </tbody>
     </table>
+
+
+
+
     <div>
         {!! $subjects->links() !!}
     </div>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
+            // delete
             $(document).on('click', '#delete', function() {
+
                 var id = $(this).attr('data');
 
                 Swal.fire({
@@ -89,6 +95,13 @@
                         }
                     })
             })
+
+            // edit
+
+
+
+
+
         })
     </script>
 

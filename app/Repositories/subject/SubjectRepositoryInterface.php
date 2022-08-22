@@ -7,5 +7,5 @@ use App\Repositories\RepositoryInterface;
 interface SubjectRepositoryInterface extends RepositoryInterface
 {
 
-    public function newFaculty();
+    public function newSubject();
 }
