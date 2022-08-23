@@ -23,9 +23,14 @@ class SubjectRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $data = [
             'name' => 'required|unique:subjects|min:10|max:30',
         ];
-    }
 
+        if ($this->route('subject')) {
+            $data['name'] = 'required|min:10|max:30|unique:subjects,id,' . $this->route('subject');
+        }
+
+        return $data;
+    }
 }

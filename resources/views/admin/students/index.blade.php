@@ -36,7 +36,7 @@
                         {!! Form::button('Delete', ['class' => 'btn btn-danger', 'id' => 'delete', 'data' => $item->id]) !!}
 
                         <div>
-                            <button type="button" class="btn btn-info" name="add" id="add" data-toggle="modal"
+                            <button type="button" class="btn btn-info" name="edit" id="edit" data-toggle="modal"
                                 data-target="#edit_data_Modal" data-id="{{ $item->id }}"> Edit </button>
                         </div>
 
@@ -152,41 +152,46 @@
 
             // edit
 
-            // $('#edit_form').submit(function(e) {
-            //     e.preventDefault()
-            //     var id = $(this).data('id');
-            //     console.log(`id`, id);
+            $('#edit').click(function(e) {
+                var id = $(this).attr('data-id');
+                console.log(`id`, id);
+                $.ajax({
+                    url: 'students/'+id+'/edit',
+                    method: 'GET',
+                    data: {
 
-            //     $.ajax({
-            //         url: '',
-            //         method: 'POST',
-            //         data: {
-            //             name: name,
-            //             slug: slug,
-            //             icon: icon
-            //         },
-            //         success: function(response) {
-            //             Swal.fire({
-            //                 position: 'center',
-            //                 icon: 'success',
-            //                 title: 'Thêm thành công',
-            //                 showConfirmButton: false,
-            //                 timer: 700
-            //             })
-            //             $('#add_data_Modal').modal('hide')
-            //             setTimeout((function() {
-            //                 window.location.reload();
-            //             }), 1000);
-            //         }
-            //     })
+                    },
+                    dataType:"json",
+                    success: function(response) {
+                        console.log(`response`, response);
+                    }
+                })
 
 
+                 // $.ajax({
+                //     url: '',
+                //     method: 'POST',
+                //     data: {
+                //         name: name,
+                //         slug: slug,
+                //         icon: icon
+                //     },
+                //     success: function(response) {
+                //         Swal.fire({
+                //             position: 'center',
+                //             icon: 'success',
+                //             title: 'Thêm thành công',
+                //             showConfirmButton: false,
+                //             timer: 700
+                //         })
+                //         $('#add_data_Modal').modal('hide')
+                //         setTimeout((function() {
+                //             window.location.reload();
+                //         }), 1000);
+                //     }
+                // })
 
-
-
-            // })
-
-
+            })
         })
     </script>
 

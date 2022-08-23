@@ -65,6 +65,11 @@ class StudentController extends Controller
 
     public function edit($id)
     {
+        $students = $this->studentRepo->find($id);
+
+        return response()->json([
+            'data' => $students
+        ],200);
     }
 
     public function update(Request $request, $id)

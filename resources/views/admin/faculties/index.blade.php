@@ -9,7 +9,8 @@
     @include('admin.layout.alert')
 
     <div>
-        <a href="{{ Route('faculties.create') }}" class="btn btn-success btn-sm" style="margin-bottom:20px;"><i class="fa fa-plus"></i></a>
+        <a href="{{ Route('faculties.create') }}" class="btn btn-success btn-sm" style="margin-bottom:20px;"><i
+                class="fa fa-plus"></i></a>
     </div>
 
     <table class='table'>
@@ -27,7 +28,8 @@
                     <td>{{ $item->name }}</td>
                     <td style="display: flex; gap:10px;">
                         <div>
-                            <a href="{{ Route('faculties.edit', $item->id) }}" class="btn btn-info btn-sm"><i  class="fa fa-edit"></i></a>
+                            <a href="{{ Route('faculties.edit', $item->id) }}" class="btn btn-info btn-sm"><i
+                                    class="fa fa-edit"></i></a>
                         </div>
                         {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
                     </td>
@@ -83,15 +85,9 @@
 
                                 }
                             })
-
                         }
                     })
-
-
-
             })
-
-
         })
     </script>
 @endsection

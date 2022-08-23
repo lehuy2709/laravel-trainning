@@ -5,10 +5,14 @@
 @section('content-title', 'Manage Subjects')
 
 @section('content')
+
     @include('admin.layout.alert')
+
     <div>
-        <a href="{{ Route('subjects.create') }}" class="btn btn-success" style="margin-bottom:20px;">Create</a>
+        <a href="{{ Route('subjects.create') }}" class="btn btn-success btn-sm" style="margin-bottom:20px;"><i
+                class="fa fa-plus"></i></a>
     </div>
+
     <table class='table'>
         <thead>
             <tr>
@@ -18,35 +22,26 @@
             </tr>
         </thead>
         <tbody>
-
             @foreach ($subjects as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->name }}</td>
                     <td style="display: flex; gap:10px;">
-
-                        {!! Form::button('Delete', ['class' => 'btn btn-danger', 'id' => 'delete', 'data' => $item->id]) !!}
-
                         <div>
-                            <a href="{{ Route('subjects.edit', $item->id) }}" class="btn btn-info">Edit</a>
+                            <a href="{{ Route('subjects.edit', $item->id) }}" class="btn btn-info btn-sm"><i
+                                    class="fa fa-edit"></i></a>
                         </div>
-
-
+                        {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
                     </td>
                 </tr>
             @endforeach
-
-
-
         </tbody>
     </table>
-
-
-
 
     <div>
         {!! $subjects->links() !!}
     </div>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
@@ -95,15 +90,6 @@
                         }
                     })
             })
-
-            // edit
-
-
-
-
-
         })
     </script>
-
-
 @endsection
