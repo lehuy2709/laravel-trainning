@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Repositories\RepositoryInterface;
-use PhpParser\Node\Expr\FuncCall;
 
 abstract class BaseRepository implements RepositoryInterface
 {
