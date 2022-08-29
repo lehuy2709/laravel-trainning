@@ -1,14 +1,25 @@
 @extends('admin.layout.master')
 
-@section('title', 'Manage Student')
 
-@section('content-title', 'Manage Student')
 
+@role('admin')
+
+@section('title', 'Manage Students')
+@section('content-title', 'Manage Students')
+
+@else
+
+@section('title', 'List Students')
+@section('content-title', 'List Student')
+
+@endrole
 @section('content')
     @include('admin.layout.alert')
+    @role('admin')
     <div>
         <a href="{{ Route('students.create') }}" class="btn btn-success" style="margin-bottom:20px;">Create</a>
     </div>
+    @endrole
 
     <table class='table'>
         <thead>
@@ -19,7 +30,9 @@
                 <th>Gender</th>
                 <th>Email</th>
                 <th>Faculty</th>
+                @role('admin')
                 <th>Action</th>
+                @endrole
             </tr>
         </thead>
         <tbody>
@@ -31,6 +44,7 @@
                     <td>{{ $item->gender == 1 ? 'Nam' : 'Nữ' }}</td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->faculty->name }}</td>
+                    @role('admin')
                     <td style="display: flex; gap:10px;">
 
                         {!! Form::button('Delete', ['class' => 'btn btn-danger', 'id' => 'delete', 'data' => $item->id]) !!}
@@ -42,6 +56,7 @@
 
 
                     </td>
+                    @endrole
                 </tr>
             @endforeach
 

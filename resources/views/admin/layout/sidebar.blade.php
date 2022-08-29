@@ -10,14 +10,20 @@
     <div class="sidebar">
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
+            {{-- <div class="image">
                 <img src='' class="img-circle elevation-2" alt="User Image">
-            </div>
+            </div> --}}
             <div class="info">
                 <a href="#" class="d-block">
                     {{ Auth::check() ? Auth::user()->name : '' }}
 
-                    <span class="right badge badge-success"> Admin</span>
+                    <span class="right badge badge-success">
+                        @hasrole('admin')
+                            Admin
+                        @else
+                            Student
+                        @endhasrole
+                    </span>
                 </a>
 
             </div>
@@ -45,40 +51,56 @@
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fa fa-window-maximize"></i>
-                        <p>
-                            Manage
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ Route('faculties.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Faculties</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ Route('subjects.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Subjects</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ Route('students.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Students</p>
-                            </a>
-                        </li>
+                @role('admin')
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-window-maximize"></i>
+                            <p>
+                                Manage
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ Route('faculties.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Faculties</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ Route('subjects.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Subjects</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ Route('students.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Students</p>
+                                </a>
+                            </li>
 
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ Route('faculties.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Faculties</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ Route('subjects.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Subjects</p>
+                        </a>
+                    </li>
+                @endrole
                 <li class="nav-item">
-                    <a href="{{ route('logout') }}" class="nav-link"  onclick="event.preventDefault();
+                    <a href="{{ route('logout') }}" class="nav-link"
+                        onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
-                        <i class="nav-icon fa fa-asterisk"></i>
+                        <i class="nav-icon fa fa-sign-out"></i>
                         <p>
                             Sign Out
                         </p>
@@ -87,6 +109,7 @@
                         @csrf
                     </form>
                 </li>
+
                 {{-- <li class="nav-item">
                     <a href="" class="nav-link">
                         <i class="fa-solid fa-apple-whole"></i>

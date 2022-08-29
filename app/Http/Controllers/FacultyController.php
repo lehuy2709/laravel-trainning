@@ -29,7 +29,7 @@ class FacultyController extends Controller
     {
         $faculty = $this->facultyRepo->newFaculty();
 
-        return view('admin.faculties.create',compact('faculty'));
+        return view('admin.faculties.create', compact('faculty'));
     }
 
     public function store(FacultyRequest $request)
@@ -44,7 +44,7 @@ class FacultyController extends Controller
     {
         $faculty = $this->facultyRepo->find($id);
 
-        return view('admin.faculties.create', compact('faculty','id'));
+        return view('admin.faculties.create', compact('faculty', 'id'));
     }
 
     public function update(FacultyRequest $request, $id)

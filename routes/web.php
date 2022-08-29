@@ -17,18 +17,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('role:admin')->get('/', function () {
+Route::middleware(['auth', 'role:admin'])->get('admin', function () {
     return view('admin.dashboard.index');
 });
 
-
-Route::group(['middleware' => 'role:admin'], function () {
+Route::middleware('auth', 'role:admin')->group(function () {
     Route::resources([
         'faculties' => FacultyController::class,
         'subjects' => SubjectController::class,
         'students' => StudentController::class,
     ]);
 });
+
+Route::middleware('auth','permission:read')->group(function () {
+    Route::resource('faculties', FacultyController::class)->only('index');
+    Route::resource('subjects', SubjectController::class)->only('index');
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);

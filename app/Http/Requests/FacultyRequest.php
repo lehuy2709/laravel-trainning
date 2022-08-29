@@ -28,10 +28,10 @@ class FacultyRequest extends FormRequest
             'name' => 'required|unique:faculties|min:10|max:30',
         ];
 
-        if ($this->route('faculty')) {
-            $data['name'] = 'required|min:10|max:30|unique:faculties,id,' . $this->route('faculty');
+        if ($this->route('faculties')) {
+            $data['name'] = 'required|unique:faculties,id' . $this->route('faculties');
         }
-        
+
         return $data;
     }
 }
