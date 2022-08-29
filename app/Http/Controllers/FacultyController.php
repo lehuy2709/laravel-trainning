@@ -59,6 +59,7 @@ class FacultyController extends Controller
     public function destroy($id)
     {
         $this->facultyRepo->delete($id);
+        Session::flash('success', 'Faculty has successfully updated.');
 
         return redirect()->route('faculties.index');
     }

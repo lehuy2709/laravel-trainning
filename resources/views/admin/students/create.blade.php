@@ -90,7 +90,7 @@
 
     <div style="margin-bottom:20px">
         {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
-        <a href="{{ Route('students.index') }}" class="btn btn-info">Back</a>
+        <a href="{{ Route('students.index') }}" class="btn btn-default">Back</a>
     </div>
 
     {!! Form::close() !!}

@@ -10,7 +10,7 @@ use App\Repositories\Student\StudentRepository;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Subject\SubjectRepositoryInterface;
-use App\Repositories\Subject\UserRepository;
+use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\Paginator as PaginationPaginator;

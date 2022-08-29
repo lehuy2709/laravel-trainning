@@ -19,9 +19,15 @@
     </div>
 
     <div style="margin-bottom:20px">
-        {{ Form::submit(isset($id)? 'Save' : 'Create', ['class' => 'btn btn-primary']) }}
+        {{ Form::submit(isset($id) ? 'Save' : 'Create', ['class' => 'btn btn-primary']) }}
         <a href="{{ Route('faculties.index') }}" class="btn btn-default">Back</a>
     </div>
 
     {{ Form::close() }}
+
+    @if (isset($id))
+        {{ Form::model($faculty, ['route' => ['faculties.destroy', $faculty->id], 'method' => 'DELETE']) }}
+        {{ Form::submit('Delete', ['class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"]) }}
+        {{ Form::close() }}
+    @endif
 @endsection

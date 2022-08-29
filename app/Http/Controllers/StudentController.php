@@ -6,7 +6,9 @@ use App\Http\Requests\StudentRequest;
 use App\Models\Student;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
@@ -14,11 +16,13 @@ class StudentController extends Controller
 
     protected $studentRepo;
     protected $facultyRepo;
+    protected $userRepo;
 
-    public function __construct(StudentRepositoryInterface $studentRepo, FacultyRepositoryInterface $facultyRepo)
+    public function __construct(StudentRepositoryInterface $studentRepo, FacultyRepositoryInterface $facultyRepo, UserRepositoryInterface $userRepo)
     {
         $this->studentRepo = $studentRepo;
         $this->facultyRepo = $facultyRepo;
+        $this->userRepo = $userRepo;
     }
 
     public function index()
@@ -43,6 +47,13 @@ class StudentController extends Controller
     public function store(StudentRequest $request)
     {
         $data = $request->all();
+        $data['password'] = Hash::make('123123');
+        $createUser = $this->userRepo->create($data);
+        $idUser = $createUser->id;
+        $data['user_id'] = $idUser;
+        $user = $this->userRepo->find($idUser);
+        $user->assignRole('student');
+        $user->givePermissionTo('read');
 
         if ($request->hasFile('avatar')) {
             $destination_path = 'public/images/students/';
@@ -69,7 +80,7 @@ class StudentController extends Controller
 
         return response()->json([
             'data' => $students
-        ],200);
+        ], 200);
     }
 
     public function update(Request $request, $id)
