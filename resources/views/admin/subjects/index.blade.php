@@ -70,6 +70,7 @@
                         text: "Are you sure?",
                         icon: 'warning',
                         showCancelButton: true,
+                        customClass: 'swal-wide',
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Yes, delete it!'

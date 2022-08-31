@@ -7,7 +7,6 @@
 @section('content')
     {{ Form::model($students, ['route' => 'students.store', 'method' => 'post', 'enctype' => 'multipart/form-data']) }}
 
-
     <div class="form-group">
         <label for="exampleInputEmail1">Name</label>
         {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Enter Name']) !!}
@@ -33,6 +32,7 @@
             {{ $message }}
         </div>
     @enderror
+
     <div class="form-group">
         <label for="exampleInputEmail1">Phone</label>
         {!! Form::text('phone', old('phone'), ['class' => 'form-control', 'placeholder' => 'Enter phone']) !!}
@@ -42,6 +42,7 @@
             {{ $message }}
         </div>
     @enderror
+
     <div class="form-group">
         <label for="exampleInputEmail1">Avatar</label>
         {!! Form::file('avatar', ['class' => 'form-control']) !!}
@@ -51,6 +52,7 @@
             {{ $message }}
         </div>
     @enderror
+
     <div class="form-group">
         <label for="exampleInputEmail1">Gender</label>
         <div class="form-check">
@@ -87,14 +89,10 @@
         </div>
     @enderror
 
-
     <div style="margin-bottom:20px">
         {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
         <a href="{{ Route('students.index') }}" class="btn btn-default">Back</a>
     </div>
 
     {!! Form::close() !!}
-
-
-
 @endsection

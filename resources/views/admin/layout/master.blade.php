@@ -150,12 +150,18 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"
-                        role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
+                    <a href="{{ route('logout') }}" class="nav-link"
+                    onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
+                    <i class="mdi mdi-logout"></i>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
                 </li>
+
             </ul>
         </nav>
         <!-- /.navbar -->

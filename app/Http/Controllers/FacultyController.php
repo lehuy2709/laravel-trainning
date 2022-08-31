@@ -18,9 +18,16 @@ class FacultyController extends Controller
         $this->facultyRepo = $facultyRepo;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $faculties = $this->facultyRepo->getLatestRecord()->Paginate(5);
+
+
+        if ($request->ajax()) {
+            return response()->json([
+                'faculties' => $faculties
+            ],200);
+        }
 
         return view('admin.faculties.index', compact('faculties'));
     }

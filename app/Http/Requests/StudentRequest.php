@@ -30,7 +30,6 @@ class StudentRequest extends FormRequest
             'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|min:10|max:200',
             'birthday' => 'required|before:today'
-
         ];
     }
 }

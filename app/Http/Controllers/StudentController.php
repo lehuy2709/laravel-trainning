@@ -27,12 +27,12 @@ class StudentController extends Controller
 
     public function index()
     {
+        $faculties = $this->facultyRepo->getAll()->pluck('name', 'id');
         $students = $this->studentRepo
             ->getLatestRecord()
             ->with(['faculty'])
             ->Paginate(5);
-
-        return view('admin.students.index', compact('students'));
+        return view('admin.students.index', compact('students', 'faculties'));
     }
 
     public function create()
@@ -42,7 +42,6 @@ class StudentController extends Controller
 
         return view('admin.students.create', compact('students', 'faculties'));
     }
-
 
     public function store(StudentRequest $request)
     {
@@ -69,28 +68,35 @@ class StudentController extends Controller
         return redirect()->route('students.index');
     }
 
-
     public function show($id)
     {
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $students = $this->studentRepo->find($id);
 
-        return response()->json([
-            'data' => $students
-        ], 200);
+        if ($request->ajax()) {
+            return response()->json([
+                'data' => $students
+            ], 200);
+        }
     }
 
     public function update(Request $request, $id)
     {
+        $this->studentRepo->find($id)->update($request->all());
+        $student = $this->studentRepo->find($id);
+        $facultyName = $student->faculty->name;
+
+        return response()->json(['data' => $student, 'facultyName' => $facultyName, 'student' => $request->all(), 'studentid' => $id, 'message' => 'Cập nhật thông tin sinh viên thành công'], 200);
     }
 
     public function destroy($id)
     {
         $this->studentRepo->delete($id);
 
-        return redirect()->route('students.index');
+        return response()->json(['data'=>'removed'],200);
+        // return redirect()->route('students.index');
     }
 }
