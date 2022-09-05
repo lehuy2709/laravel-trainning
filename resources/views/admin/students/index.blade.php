@@ -1,7 +1,5 @@
 @extends('admin.layout.master')
 
-
-
 @role('admin')
     @section('title', 'Manage Students')
 @section('content-title', 'Manage Students')
@@ -9,9 +7,27 @@
 @section('title', 'List Students')
 @section('content-title', 'List Student')
 @endrole
+
 @section('content')
 @include('admin.layout.alert')
 @role('admin')
+    <form class="search" action="{{Route('students.index')}}" method="GET">
+        <h3> <i>Search students by age</i> </h3>
+        <div class="input-group">
+            <div class="form-group" style="margin-right:10px">
+                <input type="search" name="fromAge" id="form1" placeholder="From Age" class="form-control" />
+            </div>
+            <div class="form-group" style="margin:0 10px;">
+                <input type="search" name="toAge" id="form1" placeholder="To Age" class="form-control" />
+            </div>
+            <div class="form-group" style="margin:0 10px;">
+                <button type="submit" class="btn btn-info">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+        </div>
+    </form>
     <div>
         <a href="{{ Route('students.create') }}" class="btn btn-success btn-sm" style="margin-bottom:20px;"><i
                 class="fa fa-plus"></i></a>
@@ -37,7 +53,8 @@
             <tr>
                 <td>{{ $item->id }}</td>
                 <td id="data-name-{{ $item->id }}">{{ $item->name }}</td>
-                <td><img src="{{ asset('storage/images/students/' . $item->avatar) }}" alt="" width="100px"></td>
+                <td><img src="{{ asset('storage/images/students/' . $item->avatar) }}" alt="" width="100px">
+                </td>
                 <td id="data-gender-{{ $item->id }}">{{ $item->gender == 1 ? 'Nam' : 'Nữ' }}</td>
                 <td id="data-email-{{ $item->id }}">{{ $item->email }}</td>
                 <td id="data-faculty-{{ $item->id }}">{{ $item->faculty->name }}</td>
@@ -175,10 +192,6 @@
                                     'success'
                                 )
                                 _this.parent().parent().remove();
-                                // setTimeout((function() {
-                                //     window.location.reload();
-                                // }), 1000);
-
                             }
                         })
 
@@ -220,7 +233,6 @@
                     selectedGender = genders[i].value;
                 }
             }
-
             e.preventDefault();
             $.ajax({
                 url: 'students/' + id,

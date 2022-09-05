@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
+use App\Mail\SendMail;
 use App\Models\Student;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
@@ -25,13 +27,15 @@ class StudentController extends Controller
         $this->userRepo = $userRepo;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $faculties = $this->facultyRepo->getAll()->pluck('name', 'id');
         $students = $this->studentRepo
             ->getLatestRecord()
             ->with(['faculty'])
             ->Paginate(5);
+        $students = $this->studentRepo->search($request->all());
+
         return view('admin.students.index', compact('students', 'faculties'));
     }
 
@@ -63,6 +67,8 @@ class StudentController extends Controller
         }
 
         $this->studentRepo->create($data);
+        $mail = new SendMail($user);
+        Mail::to($request->email)->send($mail);
         Session::flash('success', 'Student has been created successfully.');
 
         return redirect()->route('students.index');
@@ -96,7 +102,7 @@ class StudentController extends Controller
     {
         $this->studentRepo->delete($id);
 
-        return response()->json(['data'=>'removed'],200);
+        return response()->json(['data' => 'removed'], 200);
         // return redirect()->route('students.index');
     }
 }
