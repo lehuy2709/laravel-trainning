@@ -13,7 +13,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return User::class;
     }
 
-    public function newSubject()
+    public function newUser()
     {
         return new $this->model;
     }

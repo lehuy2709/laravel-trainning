@@ -11,7 +11,7 @@
 @section('content')
 @include('admin.layout.alert')
 @role('admin')
-    <form class="search" action="{{Route('students.index')}}" method="GET">
+    <form class="search" action="{{ Route('students.index') }}" method="GET">
         <h3> <i>Search students by age</i> </h3>
         <div class="input-group">
             <div class="form-group" style="margin-right:10px">
@@ -170,6 +170,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
+                    customClass: 'swal-wide',
                     confirmButtonText: 'Yes, delete it!'
                 })
                 .then((result) => {
@@ -191,8 +192,9 @@
                                     'Deleted Success',
                                     'success'
                                 )
+                                console.log(response);
                                 _this.parent().parent().remove();
-                            }
+                            },
                         })
 
                     }

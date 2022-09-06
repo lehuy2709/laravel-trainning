@@ -96,19 +96,6 @@
                         </a>
                     </li>
                 @endrole
-                <li class="nav-item">
-                    <a href="{{ route('logout') }}" class="nav-link"
-                        onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
-                        <i class="nav-icon fa fa-sign-out"></i>
-                        <p>
-                            Sign Out
-                        </p>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </li>
 
                 {{-- <li class="nav-item">
                     <a href="" class="nav-link">

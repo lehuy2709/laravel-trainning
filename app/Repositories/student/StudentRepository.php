@@ -21,15 +21,16 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     {
         $student = $this->model->newQuery();
 
-        if(isset($data['fromAge'])) {
+        if (isset($data['fromAge'])) {
             $student->whereYear('birthday', '<=', Carbon::now()->subYear($data['fromAge'])->format('Y'));
         }
 
-        if(isset($data['toAge'])) {
+        if (isset($data['toAge'])) {
             $student->whereYear('birthday', '>=', Carbon::now()->subYear($data['toAge'])->format('Y'));
         }
 
         return $student->paginate(5)->withQueryString();
     }
 
+   
 }

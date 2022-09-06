@@ -14,6 +14,8 @@ interface RepositoryInterface
 
     public function find($id);
 
+    public function first();
+
     public function with($attributes = []);
 
     public function select($attributes = []);
@@ -25,4 +27,8 @@ interface RepositoryInterface
     public function delete($id);
 
     public function newModel();
+
+
+
+
 }

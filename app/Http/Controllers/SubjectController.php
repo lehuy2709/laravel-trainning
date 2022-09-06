@@ -22,6 +22,15 @@ class SubjectController extends Controller
     {
         $subjects = $this->subjectRepo->getLatestRecord()->Paginate(5);
 
+        // $subjects = $this->subjectRepo->find(6)->with('students')->get();
+
+        // foreach ($subjects as $value) {
+        //     foreach ($value->students as $value2) {
+        //         dd($value2->pivot->point);
+        //     }
+        // }
+
+
         return view('admin.subjects.index', compact('subjects'));
     }
 
@@ -58,8 +67,20 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
+        // $this->subjectRepo->delete($id);
+
+        // return redirect()->route('subjects.index');
+
+        $subject = $this->subjectRepo->find($id)->with('students')->get();
+
+        foreach ($subject->students as $value) {
+            if ($value->pivot->point) {
+                return response()->json(['error' => 'can not delete'], 404);
+            }
+        }
+
         $this->subjectRepo->delete($id);
 
-        return redirect()->route('subjects.index');
+        return response()->json(['data' => $subject], 200);
     }
 }

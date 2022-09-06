@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StudentRequest;
 use App\Mail\SendMail;
 use App\Models\Student;
+use App\Models\User;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
@@ -100,9 +101,10 @@ class StudentController extends Controller
 
     public function destroy($id)
     {
+        $user = User::join('students', 'students.user_id', 'users.id')->where('students.id', $id)->delete();
         $this->studentRepo->delete($id);
 
         return response()->json(['data' => 'removed'], 200);
-        // return redirect()->route('students.index');
+
     }
 }

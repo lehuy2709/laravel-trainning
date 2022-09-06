@@ -92,6 +92,15 @@
                                     'success'
                                 )
                                 _this.parent().parent().remove();
+                            },
+                            error: function(response) {
+                                console.log(`response`, response);
+                                Swal.fire({
+                                    icon: 'error',
+                                    customClass: 'swal-wide',
+                                    title: 'Oops...',
+                                    text: 'can not delete',
+                                })
                             }
                         })
 

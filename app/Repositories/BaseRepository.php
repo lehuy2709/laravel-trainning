@@ -64,6 +64,13 @@ abstract class BaseRepository implements RepositoryInterface
         return $result;
     }
 
+    public function first()
+    {
+        $result = $this->model->first();
+
+        return $result;
+    }
+
     public function create($attributes = [])
     {
         return $this->model->create($attributes);
