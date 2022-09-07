@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
 use App\Http\Requests\SubjectRequest;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Repositories\Subject\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Mockery\Matcher\Subset;
 
 class SubjectController extends Controller
 {
@@ -20,18 +23,27 @@ class SubjectController extends Controller
     }
     public function index()
     {
-        $subjects = $this->subjectRepo->getLatestRecord()->Paginate(5);
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->hasRole('student')) {
 
-        // $subjects = $this->subjectRepo->find(6)->with('students')->get();
+                $student = Student::where('user_id', $user->id)->first();
 
-        // foreach ($subjects as $value) {
-        //     foreach ($value->students as $value2) {
-        //         dd($value2->pivot->point);
-        //     }
-        // }
+                if ($student) {
+                    $subjectsPoint = $student->subjects;
+                }
+            }
+
+            else{
+                $subjectsPoint = '';
+            }
+
+        }
+        $subjects = $this->subjectRepo->getLatestRecord();
+
+        return view('admin.subjects.index', compact('subjects','subjectsPoint'));
 
 
-        return view('admin.subjects.index', compact('subjects'));
     }
 
     public function create()
@@ -67,16 +79,10 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
-        // $this->subjectRepo->delete($id);
+        $subject = $this->subjectRepo->find($id);
 
-        // return redirect()->route('subjects.index');
-
-        $subject = $this->subjectRepo->find($id)->with('students')->get();
-
-        foreach ($subject->students as $value) {
-            if ($value->pivot->point) {
-                return response()->json(['error' => 'can not delete'], 404);
-            }
+        if ($subject->students()->count('*')) {
+            return response()->json(['error' => 'can not delete'], 404);
         }
 
         $this->subjectRepo->delete($id);

@@ -28,6 +28,23 @@
 
         </div>
     </form>
+    <form class="search" action="{{ Route('students.index') }}" method="GET">
+        <h3> <i>Search students by Point</i> </h3>
+        <div class="input-group">
+            <div class="form-group" style="margin-right:10px">
+                <input type="search" name="fromAge" id="form1" placeholder="From Age" class="form-control" />
+            </div>
+            <div class="form-group" style="margin:0 10px;">
+                <input type="search" name="toAge" id="form1" placeholder="To Age" class="form-control" />
+            </div>
+            <div class="form-group" style="margin:0 10px;">
+                <button type="submit" class="btn btn-info">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+        </div>
+    </form>
     <div>
         <a href="{{ Route('students.create') }}" class="btn btn-success btn-sm" style="margin-bottom:20px;"><i
                 class="fa fa-plus"></i></a>

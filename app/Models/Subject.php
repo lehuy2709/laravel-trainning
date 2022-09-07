@@ -12,7 +12,7 @@ class Subject extends Model
         'name'
     ];
 
-    public function students(){
-        return $this->belongsToMany(Student::class,'student_subject','student_id','subject_id')->withPivot('point');
+    public function students() {
+        return $this->belongsToMany(Student::class)->withPivot('point');
     }
 }

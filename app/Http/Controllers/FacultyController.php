@@ -20,9 +20,7 @@ class FacultyController extends Controller
 
     public function index(Request $request)
     {
-        $faculties = $this->facultyRepo->getLatestRecord()->Paginate(5);
-
-
+        $faculties = $this->facultyRepo->getLatestRecord();
         if ($request->ajax()) {
             return response()->json([
                 'faculties' => $faculties

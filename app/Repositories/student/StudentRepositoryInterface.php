@@ -7,4 +7,6 @@ interface StudentRepositoryInterface extends RepositoryInterface
     public function newStudent();
 
     public function search($data);
+
+    public function getStudents();
 }

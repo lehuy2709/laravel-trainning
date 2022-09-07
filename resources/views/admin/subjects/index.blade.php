@@ -25,9 +25,11 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            @role('admin')
-                <th>Action</th>
+            @role('student')
+                <th>Point</th>
+                <th>Status</th>
             @endrole
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -44,13 +46,39 @@
                         {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
                     </td>
                 @endrole
-            </tr>
-        @endforeach
-    </tbody>
+                @role('student')
+                    @if ($subjectsPoint->isEmpty())
+                        <td>None</td>
+                        <td><span class="text-danger">haven't studied yet</span></td>
+                        <td> <a href="{{Route('registerSubject',$item->id)}}" class="btn btn-primary btn-sm">Register</a></td>
+                    @else
+                        @for ($i = 0; $i < $subjectsPoint->count(); $i++)
+                            @if ($item->id == $subjectsPoint[$i]->id)
+                                @if ($subjectsPoint[$i]->pivot->point == null)
+                                    <td>None</td>
+                                    <td><span class="text-success">Studying</span> </td>
+                                @else
+                                    <td> <span class="text-success">{{ $subjectsPoint[$i]->pivot->point }}</span></td>
+                                    <td><span class="text-primary">Learned</span></td>
+                                @endif
+                            @break
+                        @elseif($i == $subjectsPoint->count() - 1)
+                            @if ($item->id !== $subjectsPoint[$i]->id)
+                                <td>None</td>
+                                <td> <span class="text-danger">haven't studied yet</span></td>
+                                <td><a href="{{Route('registerSubject',$item->id)}}" class="btn btn-primary btn-sm">Register</a></td>
+                            @endif
+                        @endif
+                    @endfor
+                @endif
+            @endrole
+        </tr>
+    @endforeach
+</tbody>
 </table>
 
 <div>
-    {!! $subjects->links() !!}
+{!! $subjects->links() !!}
 </div>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

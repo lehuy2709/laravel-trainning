@@ -39,7 +39,7 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function getLatestRecord()
     {
-        return $this->model->orderByRaw("updated_at DESC, created_at DESC");
+        return $this->model->orderByRaw("updated_at DESC, created_at DESC")->Paginate();
     }
 
     public function pluck($attributes = [])

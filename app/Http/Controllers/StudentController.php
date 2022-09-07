@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
+use App\Jobs\SendMailJob;
 use App\Mail\SendMail;
 use App\Models\Student;
 use App\Models\User;
@@ -10,6 +11,7 @@ use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -31,10 +33,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $faculties = $this->facultyRepo->getAll()->pluck('name', 'id');
-        $students = $this->studentRepo
-            ->getLatestRecord()
-            ->with(['faculty'])
-            ->Paginate(5);
+        $students = $this->studentRepo->getStudents();
         $students = $this->studentRepo->search($request->all());
 
         return view('admin.students.index', compact('students', 'faculties'));
@@ -68,8 +67,8 @@ class StudentController extends Controller
         }
 
         $this->studentRepo->create($data);
-        $mail = new SendMail($user);
-        Mail::to($request->email)->send($mail);
+        $mail = new SendMailJob($user);
+        dispatch($mail);
         Session::flash('success', 'Student has been created successfully.');
 
         return redirect()->route('students.index');
@@ -105,6 +104,27 @@ class StudentController extends Controller
         $this->studentRepo->delete($id);
 
         return response()->json(['data' => 'removed'], 200);
+    }
 
+    public function regSubject($id)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $student = Student::where('user_id', $user->id)->first();
+            $subject_student = $student->subjects()->get();
+
+            foreach ($subject_student  as $value) {
+                if ($id == $value->pivot->subject_id) {
+                    Session::flash('error', 'This course is already registered');
+
+                    return redirect()->back();
+                }
+            }
+
+            $register = $student->subjects()->attach($student->id, ['subject_id' => $id]);
+            Session::flash('success', 'Successfully registered for the course');
+
+            return redirect()->back();
+        }
     }
 }

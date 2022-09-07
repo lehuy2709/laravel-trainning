@@ -32,8 +32,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
 Route::middleware('auth','permission:read')->group(function () {
     Route::resource('faculties', FacultyController::class)->only('index');
     Route::resource('subjects', SubjectController::class)->only('index');
-});
 
+});
+Route::get('register-subject/{id}', [StudentController::class, 'regSubject'])->name('registerSubject');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
