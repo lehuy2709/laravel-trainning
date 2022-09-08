@@ -32,9 +32,13 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
+        $students = Student::with(['subjects'])->first();
+        dd($students->subjects->avg('pivot.point'));
+
         $faculties = $this->facultyRepo->getAll()->pluck('name', 'id');
         $students = $this->studentRepo->getStudents();
         $students = $this->studentRepo->search($request->all());
+
 
         return view('admin.students.index', compact('students', 'faculties'));
     }
@@ -106,25 +110,27 @@ class StudentController extends Controller
         return response()->json(['data' => 'removed'], 200);
     }
 
-    public function regSubject($id)
+    public function regSubject(Request $request)
     {
+        $data = $request->regSubjects;
+
         if (Auth::check()) {
+
             $user = Auth::user();
-            $student = Student::where('user_id', $user->id)->first();
-            $subject_student = $student->subjects()->get();
+            $student = $this->studentRepo->whereByUserId($user->id);
 
-            foreach ($subject_student  as $value) {
-                if ($id == $value->pivot->subject_id) {
-                    Session::flash('error', 'This course is already registered');
+            if ($data) {
 
-                    return redirect()->back();
+                foreach ($data as $value) {
+                    $student->subjects()->attach($student->id, ['subject_id' => $value]);
+                    Session::flash('success', 'Successfully registered for the course');
                 }
+                return redirect()->back();
             }
-
-            $register = $student->subjects()->attach($student->id, ['subject_id' => $id]);
-            Session::flash('success', 'Successfully registered for the course');
-
-            return redirect()->back();
         }
+
+        Session::flash('error', 'This course is already registered');
+
+        return redirect()->back();
     }
 }

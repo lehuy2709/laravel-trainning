@@ -60,6 +60,7 @@
             <th>Gender</th>
             <th>Email</th>
             <th>Faculty</th>
+            <th>Point Avg</th>
             @role('admin')
                 <th>Action</th>
             @endrole
@@ -75,6 +76,7 @@
                 <td id="data-gender-{{ $item->id }}">{{ $item->gender == 1 ? 'Nam' : 'Nữ' }}</td>
                 <td id="data-email-{{ $item->id }}">{{ $item->email }}</td>
                 <td id="data-faculty-{{ $item->id }}">{{ $item->faculty->name }}</td>
+                <td></td>
                 @role('admin')
                     <td style="display: flex; gap:10px;">
                         <div>

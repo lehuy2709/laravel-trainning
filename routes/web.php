@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Auth;
@@ -29,15 +30,15 @@ Route::middleware('auth', 'role:admin')->group(function () {
     ]);
 });
 
-Route::middleware('auth','permission:read')->group(function () {
+Route::middleware('auth', 'permission:read')->group(function () {
     Route::resource('faculties', FacultyController::class)->only('index');
     Route::resource('subjects', SubjectController::class)->only('index');
-
+    Route::get('home', [HomeController::class, 'index'])->name('home');
+    Route::post('student/{id}/update', [HomeController::class, 'updateStudent'])->name('updateStudent');
 });
-Route::get('register-subject/{id}', [StudentController::class, 'regSubject'])->name('registerSubject');
+Route::post('register-subject', [StudentController::class, 'regSubject'])->name('registerSubject');
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-

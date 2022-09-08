@@ -39,4 +39,9 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
             ->with('faculty')
             ->orderBy('updated_at', 'DESC')->paginate(5);
     }
+
+    public function whereByUserId($id)
+    {
+        return $this->model->where('user_id',$id)->first();
+    }
 }
