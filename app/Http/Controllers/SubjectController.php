@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
 use App\Http\Requests\SubjectRequest;
+use App\Jobs\SendMailSubjectsJob;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Repositories\Student\StudentRepositoryInterface;
 use App\Repositories\Subject\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Mockery\Matcher\Subset;
 
@@ -16,10 +19,12 @@ class SubjectController extends Controller
 {
 
     protected $subjectRepo;
+    protected $studentRepo;
 
-    public function __construct(SubjectRepositoryInterface $subjectRepo)
+    public function __construct(SubjectRepositoryInterface $subjectRepo, StudentRepositoryInterface $studentRepo)
     {
         $this->subjectRepo = $subjectRepo;
+        $this->studentRepo = $studentRepo;
     }
     public function index()
     {
@@ -32,18 +37,13 @@ class SubjectController extends Controller
                 if ($student) {
                     $subjectsPoint = $student->subjects;
                 }
-            }
-
-            else{
+            } else {
                 $subjectsPoint = '';
             }
-
         }
         $subjects = $this->subjectRepo->getLatestRecord();
 
-        return view('admin.subjects.index', compact('subjects','subjectsPoint'));
-
-
+        return view('admin.subjects.index', compact('subjects', 'subjectsPoint'));
     }
 
     public function create()
@@ -88,5 +88,30 @@ class SubjectController extends Controller
         $this->subjectRepo->delete($id);
 
         return response()->json(['data' => $subject], 200);
+    }
+
+    public function sendMail($id)
+    {
+        $subjects = $this->subjectRepo->getAll();
+        // dd($subjects);
+        $student = $this->studentRepo->find($id);
+        $subject = $student->subjects;
+        // dd($subject);
+        $listSubject = [];
+        if ($subject->count() == 0) {
+            $listSubject = $subjects;
+        } else {
+            foreach ($subjects as $value) {
+                for ($i = 0; $i < $subject->count(); $i++) {
+                    if ($value->id == $subject[$i]->id) {
+                        break;
+                    } elseif ($i == $subject->count() - 1) {
+                        $listSubject[] = $value;
+                    }
+                }
+            }
+        }
+        $sendMail = new SendMailSubjectsJob($listSubject);
+        dispatch($sendMail);
     }
 }

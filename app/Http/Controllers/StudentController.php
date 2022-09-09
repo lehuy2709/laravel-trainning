@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
+use App\Repositories\Subject\SubjectRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,25 +23,24 @@ class StudentController extends Controller
     protected $studentRepo;
     protected $facultyRepo;
     protected $userRepo;
+    protected $subjectRepo;
 
-    public function __construct(StudentRepositoryInterface $studentRepo, FacultyRepositoryInterface $facultyRepo, UserRepositoryInterface $userRepo)
+    public function __construct(StudentRepositoryInterface $studentRepo, FacultyRepositoryInterface $facultyRepo, UserRepositoryInterface $userRepo, SubjectRepositoryInterface $subjectRepo)
     {
         $this->studentRepo = $studentRepo;
         $this->facultyRepo = $facultyRepo;
         $this->userRepo = $userRepo;
+        $this->subjectRepo = $subjectRepo;
     }
 
     public function index(Request $request)
     {
-        $students = Student::with(['subjects'])->first();
-        dd($students->subjects->avg('pivot.point'));
-
+        $students = $this->studentRepo->with(['subjects'])->Paginate();
         $faculties = $this->facultyRepo->getAll()->pluck('name', 'id');
-        $students = $this->studentRepo->getStudents();
+        $subjects = $this->subjectRepo->count('*');
         $students = $this->studentRepo->search($request->all());
 
-
-        return view('admin.students.index', compact('students', 'faculties'));
+        return view('admin.students.index', compact('students', 'faculties','subjects'));
     }
 
     public function create()

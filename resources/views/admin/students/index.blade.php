@@ -57,12 +57,12 @@
             <th>ID</th>
             <th>Name</th>
             <th>Avatar</th>
-            <th>Gender</th>
             <th>Email</th>
             <th>Faculty</th>
             <th>Point Avg</th>
+            <th>Subjects</th>
             @role('admin')
-                <th>Action</th>
+                <th style="text-align: center">Action</th>
             @endrole
         </tr>
     </thead>
@@ -73,18 +73,24 @@
                 <td id="data-name-{{ $item->id }}">{{ $item->name }}</td>
                 <td><img src="{{ asset('storage/images/students/' . $item->avatar) }}" alt="" width="100px">
                 </td>
-                <td id="data-gender-{{ $item->id }}">{{ $item->gender == 1 ? 'Nam' : 'Nữ' }}</td>
                 <td id="data-email-{{ $item->id }}">{{ $item->email }}</td>
                 <td id="data-faculty-{{ $item->id }}">{{ $item->faculty->name }}</td>
-                <td></td>
+                <td id="data-point-{{ $item->id }}">{{ round($item->subjects->avg('pivot.point'), 2) }}</td>
+                <td id="data-subject-{{ $item->id }}">{{ $item->subjects->count() }} / {{ $subjects }}</td>
                 @role('admin')
                     <td style="display: flex; gap:10px;">
+                        @if ($item->subjects->count() !== $subjects)
+                            {{ Form::model($students, ['route' => ['sendMail', $item->id], 'method' => 'post']) }}
+                            {{ Form::button('<i class="fa fa-bell" style="color: white"></i>', ['class' => 'btn btn-warning btn-sm','type'=>'submit']) }}
+                            {{ Form::close() }}
+                        @endif
                         <div>
                             <a class="btn btn-info btn-sm edit" name="edit" data-toggle="modal"
                                 data-target="#edit_data_Modal" data-id="{{ $item->id }}"><i class="fa fa-edit"
                                     style="color: white"></i></a>
                         </div>
                         {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
+
                     </td>
                 @endrole
             </tr>

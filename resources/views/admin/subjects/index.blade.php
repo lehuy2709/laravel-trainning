@@ -30,7 +30,12 @@
                     <th>Point</th>
                     <th>Status</th>
                 @endrole
+                @role('student')
                 <th><button class="btn btn-default btn-sm" id="check-all" type="button">Select All</button></th>
+                @endrole
+                @role('admin')
+                <th>Action</th>
+                @endrole
             </tr>
         </thead>
         <tbody>

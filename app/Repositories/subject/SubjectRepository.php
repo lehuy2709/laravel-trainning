@@ -15,4 +15,8 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
     {
         return new $this->model;
     }
+
+    public function count($arrs = []){
+        return  $this->model->count($arrs);
+    }
 }

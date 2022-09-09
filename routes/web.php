@@ -35,6 +35,7 @@ Route::middleware('auth', 'permission:read')->group(function () {
     Route::resource('subjects', SubjectController::class)->only('index');
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::post('student/{id}/update', [HomeController::class, 'updateStudent'])->name('updateStudent');
+    Route::post('send-mail/{id}', [SubjectController::class, 'sendMail'])->name('sendMail');
 });
 Route::post('register-subject', [StudentController::class, 'regSubject'])->name('registerSubject');
 Auth::routes();
