@@ -28,6 +28,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
         'subjects' => SubjectController::class,
         'students' => StudentController::class,
     ]);
+    Route::get('update-point/{id}', [StudentController::class,'updatePoint'])->name('updatePoint');
+    Route::get('get-subject-value/{id}', [StudentController::class,'getValueSubject'])->name('getValueSubject');
+
+
 });
 
 Route::middleware('auth', 'permission:read')->group(function () {
@@ -36,6 +40,7 @@ Route::middleware('auth', 'permission:read')->group(function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::post('student/{id}/update', [HomeController::class, 'updateStudent'])->name('updateStudent');
     Route::post('send-mail/{id}', [SubjectController::class, 'sendMail'])->name('sendMail');
+    Route::post('send-mail-all', [SubjectController::class, 'sendMailAll'])->name('sendMailAll');
 });
 Route::post('register-subject', [StudentController::class, 'regSubject'])->name('registerSubject');
 Auth::routes();

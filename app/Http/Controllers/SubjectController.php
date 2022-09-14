@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FacultyRequest;
 use App\Http\Requests\SubjectRequest;
 use App\Jobs\SendMailSubjectsJob;
+use App\Mail\SendMailSubjects;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Repositories\Student\StudentRepositoryInterface;
@@ -31,8 +32,7 @@ class SubjectController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->hasRole('student')) {
-
-                $student = Student::where('user_id', $user->id)->first();
+                $student = $this->studentRepo->whereByUserId($user->id);
 
                 if ($student) {
                     $subjectsPoint = $student->subjects;
@@ -93,11 +93,10 @@ class SubjectController extends Controller
     public function sendMail($id)
     {
         $subjects = $this->subjectRepo->getAll();
-        // dd($subjects);
         $student = $this->studentRepo->find($id);
         $subject = $student->subjects;
-        // dd($subject);
         $listSubject = [];
+
         if ($subject->count() == 0) {
             $listSubject = $subjects;
         } else {
@@ -111,7 +110,48 @@ class SubjectController extends Controller
                 }
             }
         }
-        $sendMail = new SendMailSubjectsJob($listSubject);
-        dispatch($sendMail);
+
+        $sendMail = new SendMailSubjects($listSubject);
+        Mail::to($student->email)->queue($sendMail);
+        session::flash('success', 'Send mail successfully');
+
+        return redirect()->back();
+    }
+
+    public function sendMailAll()
+    {
+        $subjects = $this->subjectRepo->getAll();
+        $students = $this->studentRepo->getAll();
+
+        foreach ($students as $value) {
+            if ($value->subjects->count() != $subjects->count()) {
+                $listIds[] = $value->id;
+            }
+        }
+
+        foreach ($listIds as $value) {
+            $listSubject = [];
+            $student = $this->studentRepo->find($value);
+            $subject_student = $student->subjects;
+
+            if ($subject_student->count() == 0) {
+                $listSubject = $subjects;
+            } else {
+                foreach ($subjects as $value) {
+                    for ($i = 0; $i < $subject_student->count(); $i++) {
+                        if ($value->id == $subject_student[$i]->id) {
+                            break;
+                        } elseif ($i == $subject_student->count() - 1) {
+                            $listSubject[] = $value;
+                        }
+                    }
+                }
+            }
+            $sendMail = new SendMailSubjects($listSubject);
+            Mail::to($student->email)->queue($sendMail);
+        }
+        session::flash('success', 'Send mail successfully');
+
+        return redirect()->back();
     }
 }

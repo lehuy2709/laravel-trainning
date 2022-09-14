@@ -60,6 +60,7 @@
             <th>Email</th>
             <th>Faculty</th>
             <th>Point Avg</th>
+            <th>Change</th>
             <th>Subjects</th>
             @role('admin')
                 <th style="text-align: center">Action</th>
@@ -75,104 +76,129 @@
                 </td>
                 <td id="data-email-{{ $item->id }}">{{ $item->email }}</td>
                 <td id="data-faculty-{{ $item->id }}">{{ $item->faculty->name }}</td>
-                <td id="data-point-{{ $item->id }}">{{ round($item->subjects->avg('pivot.point'), 2) }}</td>
-                <td id="data-subject-{{ $item->id }}">{{ $item->subjects->count() }} / {{ $subjects }}</td>
-                @role('admin')
-                    <td style="display: flex; gap:10px;">
-                        @if ($item->subjects->count() !== $subjects)
-                            {{ Form::model($students, ['route' => ['sendMail', $item->id], 'method' => 'post']) }}
-                            {{ Form::button('<i class="fa fa-bell" style="color: white"></i>', ['class' => 'btn btn-warning btn-sm','type'=>'submit']) }}
-                            {{ Form::close() }}
-                        @endif
-                        <div>
-                            <a class="btn btn-info btn-sm edit" name="edit" data-toggle="modal"
-                                data-target="#edit_data_Modal" data-id="{{ $item->id }}"><i class="fa fa-edit"
-                                    style="color: white"></i></a>
-                        </div>
-                        {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
 
-                    </td>
-                @endrole
-            </tr>
-        @endforeach
-    </tbody>
+                @if ($item->subjects->count() != $subjects)
+                    <td>Studying</td>
+                @else
+                    @for ($i = 0; $i < $subjects; $i++)
+                        @if (!$item->subjects[$i]->pivot->point)
+                            <td>Studying</td>
+                        @break
+
+                    @elseif($i == $subjects - 1)
+                        <td id="data-point-{{ $item->id }}">
+                            {{ round($item->subjects->avg('pivot.point'), 2) }}
+                        </td>
+                    @endif
+                @endfor
+            @endif
+            <td>
+                {{ Form::model($students, ['route' => ['updatePoint', $item->id], 'method' => 'GET']) }}
+                {{ Form::button('<i class="fa fa-eye" style="color: white"></i>', ['class' => 'btn btn-success btn-sm edit', 'type' => 'submit']) }}
+                {{ Form::close() }}
+            </td>
+            <td id="data-subject-{{ $item->id }}">{{ $item->subjects->count() }} / {{ $subjects }}</td>
+            @role('admin')
+                <td style="display: flex; gap:10px;">
+                    @if ($item->subjects->count() !== $subjects)
+                        {{ Form::model($students, ['route' => ['sendMail', $item->id], 'method' => 'post']) }}
+                        {{ Form::button('<i class="fa fa-bell" style="color: white"></i>', ['class' => 'btn btn-warning btn-sm', 'type' => 'submit']) }}
+                        {{ Form::close() }}
+                    @endif
+                    <div>
+                        <a class="btn btn-info btn-sm edit" name="edit" data-toggle="modal"
+                            data-target="#edit_data_Modal" data-id="{{ $item->id }}"><i class="fa fa-edit"
+                                style="color: white"></i></a>
+                    </div>
+                    {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
+
+                </td>
+            @endrole
+        </tr>
+    @endforeach
+</tbody>
 </table>
+<div style="margin-bottom:20px">
+{{ Form::model($students, ['route' => ['sendMailAll'], 'method' => 'post']) }}
+{{ Form::button('Send All', ['class' => 'btn btn-warning', 'type' => 'submit']) }}
+{{ Form::close() }}
+</div>
 <div>
-    {{ $students->links() }}
+{{ $students->links() }}
 </div>
 {{-- modal  EDIT --}}
 <div id="edit_data_Modal" class="modal fade">
 
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <h4 class="modal-title">Edit Students</h4>
-                </div>
-                <div>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div>
+                <h4 class="modal-title">Edit Students</h4>
+            </div>
+            <div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
-            </div>
-            <div class="modal-body">
-                {{ Form::model($students, ['method' => 'post', 'enctype' => 'multipart/form-data', 'id' => 'edit_form']) }}
-                <label> Name Student</label>
-                {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Enter Name', 'id' => 'name']) !!}
-                <br />
-                <label> Email Student</label>
-                {!! Form::text('email', old('email'), [
-                    'class' => 'form-control',
-                    'placeholder' => 'Enter Email',
-                    'id' => 'email',
-                    'readonly',
-                    'disabled',
-                ]) !!}
-                <br />
-                <label> Phone Student</label>
-                {!! Form::text('phone', old('phone'), [
-                    'class' => 'form-control',
-                    'placeholder' => 'Enter Phone',
-                    'id' => 'phone',
-                ]) !!}
-                <br />
-                <label> Address Student</label>
-                {!! Form::text('address', old('address'), [
-                    'class' => 'form-control',
-                    'placeholder' => 'Enter Address',
-                    'id' => 'address',
-                ]) !!}
-                <br />
-                <label> Faculty Student</label>
-                {!! Form::select('faculty_id', $faculties, null, ['class' => 'form-control', 'id' => 'faculty']) !!}
-                <br />
-                <label> BirthDay Student</label>
-                {!! Form::date('birthday', old('birthday'), ['class' => 'form-control', 'id' => 'birthday']) !!}
-                <br />
-                <label> Gender Student</label>
-                <div class="form-group">
-                    <div class="form-check">
-                        {!! Form::radio('gender', '1', true, ['id' => 'gender']) !!}
-                        <label class="form-check-label" for="exampleRadios1">
-                            Nam
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        {!! Form::radio('gender', '2', true, ['id' => 'gender']) !!}
-                        <label class="form-check-label" for="exampleRadios2">
-                            Nữ
-                        </label>
-                    </div>
+        </div>
+        <div class="modal-body">
+            {{ Form::model($students, ['method' => 'post', 'enctype' => 'multipart/form-data', 'id' => 'edit_form']) }}
+            <label> Name Student</label>
+            {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Enter Name', 'id' => 'name']) !!}
+            <br />
+            <label> Email Student</label>
+            {!! Form::text('email', old('email'), [
+                'class' => 'form-control',
+                'placeholder' => 'Enter Email',
+                'id' => 'email',
+                'readonly',
+                'disabled',
+            ]) !!}
+            <br />
+            <label> Phone Student</label>
+            {!! Form::text('phone', old('phone'), [
+                'class' => 'form-control',
+                'placeholder' => 'Enter Phone',
+                'id' => 'phone',
+            ]) !!}
+            <br />
+            <label> Address Student</label>
+            {!! Form::text('address', old('address'), [
+                'class' => 'form-control',
+                'placeholder' => 'Enter Address',
+                'id' => 'address',
+            ]) !!}
+            <br />
+            <label> Faculty Student</label>
+            {!! Form::select('faculty_id', $faculties, null, ['class' => 'form-control', 'id' => 'faculty']) !!}
+            <br />
+            <label> BirthDay Student</label>
+            {!! Form::date('birthday', old('birthday'), ['class' => 'form-control', 'id' => 'birthday']) !!}
+            <br />
+            <label> Gender Student</label>
+            <div class="form-group">
+                <div class="form-check">
+                    {!! Form::radio('gender', '1', true, ['id' => 'gender']) !!}
+                    <label class="form-check-label" for="exampleRadios1">
+                        Nam
+                    </label>
                 </div>
-                <br />
-                <input type="submit" name="saveEdit" id="saveEdit" value="Save" class="btn btn-success" />
+                <div class="form-check">
+                    {!! Form::radio('gender', '2', true, ['id' => 'gender']) !!}
+                    <label class="form-check-label" for="exampleRadios2">
+                        Nữ
+                    </label>
+                </div>
+            </div>
+            <br />
+            <input type="submit" name="saveEdit" id="saveEdit" value="Save" class="btn btn-success" />
 
-                {!! Form::close() !!}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            {!! Form::close() !!}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
+</div>
 </div>
 {{-- end modal --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

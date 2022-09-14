@@ -28,6 +28,7 @@ interface RepositoryInterface
 
     public function newModel();
 
+    public function query();
 
 
 

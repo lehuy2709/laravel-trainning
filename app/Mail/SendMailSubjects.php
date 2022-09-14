@@ -18,7 +18,7 @@ class SendMailSubjects extends Mailable
      *
      * @return void
      */
-    public function __construct(Subject $subjects)
+    public function __construct($subjects)
     {
         //
         $this->subjects = $subjects;

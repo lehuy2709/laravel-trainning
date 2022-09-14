@@ -3,7 +3,7 @@
     Number of subjects you have not studied:
     <ul>
         @foreach ($subjectsNotYet as $item)
-        <li>{{$item->id}}</li>
+        <li>{{$item->name}}</li>
         @endforeach
     </ul>
 </div>

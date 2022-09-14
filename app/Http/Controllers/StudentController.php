@@ -6,6 +6,7 @@ use App\Http\Requests\StudentRequest;
 use App\Jobs\SendMailJob;
 use App\Mail\SendMail;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\User;
 use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
@@ -132,5 +133,21 @@ class StudentController extends Controller
         Session::flash('error', 'This course is already registered');
 
         return redirect()->back();
+    }
+
+    public function updatePoint($id,Request $request){
+        $student = $this->studentRepo->find($id);
+        $subjects = $student->subjects;
+
+        return view('admin.students.add_point',compact('student','subjects'));
+    }
+
+    public function getValueSubject(Request $request)
+    {
+        $student = $this->studentRepo->find($request->idStudent);
+        $subjectsPoint = $student->subjects;
+
+        return response()->json(['data' => $subjectsPoint ,'subject_id'=>$request->idSubject ], 200);
+        // return $subjectsPoint;
     }
 }
