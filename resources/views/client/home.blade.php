@@ -6,7 +6,7 @@
 
 
 @section('content')
-@include('admin.layout.alert')
+    @include('admin.layout.alert')
 
     <!-- Top navbar -->
     <!-- Header -->
@@ -32,8 +32,8 @@
                         <div class="col">
                             <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                 <div>
-                                    <span class="heading">22</span>
-                                    <span class="description">Friends</span>
+                                    <button type="submit" name="edit" data-toggle="modal" data-target="#edit_data_Modal"
+                                        class="btn btn-primary btn-sm"><i class="fa fa-upload"> </i></button>
                                 </div>
                                 <div>
                                     <span class="heading">89</span>
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('updateStudent',$student->id)}}" enctype="multipart/form-data" method="POST">
+                    <form action="{{ route('updateStudent', $student->id) }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         <h6 class="heading-small text-muted mb-4">User information</h6>
                         <div class="pl-lg-4">
@@ -107,10 +107,10 @@
                                             class="form-control form-control-alternative" name="avatar" />
                                     </div>
                                     @error('avatar')
-                                    <div class="text-danger">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -141,6 +141,78 @@
             </div>
         </div>
     </div>
+
+    <div id="edit_data_Modal" class="modal fade">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h4 class="modal-title">Change Avatar</h4>
+                    </div>
+                    <div>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                </div>
+                <div class="modal-body">
+
+                    <form action="" method="post" enctype="multipart/form-data" class="mr-auto p-2" id="edit_form">
+                        @csrf
+                        <div class="form-group">
+                            <label class="filebutton">
+                                <span><input type="file" id="myfile" name="avatar" style=""
+                                        class="form-control form-control-sm"></span>
+                            </label>
+                            <button type="submit" class="btn btn-primary btn-lg">Change</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function() {
+
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#edit_form').submit(function(e) {
+                e.preventDefault();
+                // console.log(new FormData(this)
+                // console.log(form);
+
+                $.ajax({
+                    url: "{{ route('changeAvatar') }}",
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    data: {
+                        data: new FormData(this),
+                    },
+                    success: function(response) {
+                        console.log(response);
+
+                    }
+                })
+            })
+
+
+
+        })
+    </script>
 
 
 @endsection

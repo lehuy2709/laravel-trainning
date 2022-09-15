@@ -10,4 +10,5 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('dist/client/css/main.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/client/css/custom.css') }}">
 <script src="{{ asset('dist/admin/js/ajax/jquery-3.6.0.min.js') }}"></script>

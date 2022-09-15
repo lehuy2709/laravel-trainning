@@ -7,9 +7,11 @@ use Illuminate\Contracts\Support\Responsable;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class StudentsExport implements FromCollection, Responsable, WithMapping,ShouldAutoSize
+class StudentsExport implements FromCollection, Responsable, WithMapping, ShouldAutoSize, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -25,10 +27,7 @@ class StudentsExport implements FromCollection, Responsable, WithMapping,ShouldA
 
     public function collection()
     {
-        // return Subject::whereHas('students', function ($query) {
-        //     $query->where('subject_id', $this->id);
-        // })->get();
-        return Subject::where('id',$this->id)->with('students')->get();
+        return Subject::where('id', $this->id)->with('students')->get();
     }
 
     public function map($subjects): array
@@ -46,4 +45,15 @@ class StudentsExport implements FromCollection, Responsable, WithMapping,ShouldA
 
         return $data;
     }
+
+    public function headings(): array
+    {
+        return [
+            'id',
+            'name',
+            'email',
+            'point'
+        ];
+    }
+
 }

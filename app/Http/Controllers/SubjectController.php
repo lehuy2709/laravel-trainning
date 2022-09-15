@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Exports\StudentsExport;
 use App\Http\Requests\FacultyRequest;
+use App\Http\Requests\ImportExeclRequest;
 use App\Http\Requests\SubjectRequest;
+use App\Imports\StudentsImport;
 use App\Jobs\SendMailSubjectsJob;
 use App\Mail\SendMailSubjects;
 use App\Models\Student;
@@ -15,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Mockery\Matcher\Subset;
 
 class SubjectController extends Controller
@@ -161,12 +164,31 @@ class SubjectController extends Controller
         $subject = $this->subjectRepo->newModel();
         $subject_point = $subject->where('id', $id)->with('students')->paginate(5);
 
-        return view('admin.subjects.view_point', compact('subject_point','id'));
+        return view('admin.subjects.view_point', compact('subject_point', 'id'));
     }
 
     public function exportPoint($id)
     {
-
         return new StudentsExport($id);
+    }
+
+    public function importPoint($id, ImportExeclRequest $request)
+    {
+        $file = $request->file('myfile');
+        $student_subject = Excel::toCollection(new StudentsImport, $file);
+        $subject_point = $this->subjectRepo->with('students')->find($id);
+
+        foreach ($student_subject[0] as $item) {
+            foreach ($subject_point->students as $student) {
+                if ($student->id == $item[0]) {
+                    $student->pivot->where('student_id', $student->id)->where('subject_id', $id)->update([
+                        'point' => $item[3]
+                    ]);
+                }
+            }
+        }
+        session::flash('success', 'Import Successfully');
+
+        return redirect()->back();
     }
 }

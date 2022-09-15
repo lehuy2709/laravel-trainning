@@ -59,4 +59,8 @@ class HomeController extends Controller
 
         return redirect()->back();
     }
+
+    public function changeAvatar(Request $request){
+        dd($request);
+    }
 }

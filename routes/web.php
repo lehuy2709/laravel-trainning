@@ -30,6 +30,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     ]);
     Route::get('update-point/{id}', [StudentController::class,'updatePoint'])->name('updatePoint');
     Route::get('export/{id}', [SubjectController::class,'exportPoint'])->name('exportPoint');
+    Route::post('import/{id}', [SubjectController::class,'importPoint'])->name('importPoint');
     Route::get('view-point/{id}', [SubjectController::class,'viewPoint'])->name('viewPoint');
     Route::get('get-subject-value/{id}', [StudentController::class,'getValueSubject'])->name('getValueSubject');
 
@@ -41,6 +42,7 @@ Route::middleware('auth', 'permission:read')->group(function () {
     Route::resource('subjects', SubjectController::class)->only('index');
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::post('student/{id}/update', [HomeController::class, 'updateStudent'])->name('updateStudent');
+    Route::post('student/change', [HomeController::class, 'changeAvatar'])->name('changeAvatar');
     Route::post('send-mail/{id}', [SubjectController::class, 'sendMail'])->name('sendMail');
     Route::post('send-mail-all', [SubjectController::class, 'sendMailAll'])->name('sendMailAll');
 });

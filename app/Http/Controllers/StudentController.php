@@ -149,6 +149,5 @@ class StudentController extends Controller
         $subjectsPoint = $student->subjects;
 
         return response()->json(['data' => $subjectsPoint, 'subject_id' => $request->idSubject], 200);
-        // return $subjectsPoint;
     }
 }
