@@ -29,6 +29,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
         'students' => StudentController::class,
     ]);
     Route::get('update-point/{id}', [StudentController::class,'updatePoint'])->name('updatePoint');
+    Route::get('export/{id}', [SubjectController::class,'exportPoint'])->name('exportPoint');
+    Route::get('view-point/{id}', [SubjectController::class,'viewPoint'])->name('viewPoint');
     Route::get('get-subject-value/{id}', [StudentController::class,'getValueSubject'])->name('getValueSubject');
 
 

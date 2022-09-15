@@ -46,6 +46,10 @@
                     @role('admin')
                         <td style="display: flex; gap:10px;">
                             <div>
+                                <a href="{{ Route('viewPoint', $item->id) }}" class="btn btn-warning btn-sm"><i
+                                        class="fa fa-eye"></i></a>
+                            </div>
+                            <div>
                                 <a href="{{ Route('subjects.edit', $item->id) }}" class="btn btn-info btn-sm"><i
                                         class="fa fa-edit"></i></a>
                             </div>

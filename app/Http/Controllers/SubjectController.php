@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentsExport;
 use App\Http\Requests\FacultyRequest;
 use App\Http\Requests\SubjectRequest;
 use App\Jobs\SendMailSubjectsJob;
@@ -153,5 +154,19 @@ class SubjectController extends Controller
         session::flash('success', 'Send mail successfully');
 
         return redirect()->back();
+    }
+
+    public function viewPoint($id)
+    {
+        $subject = $this->subjectRepo->newModel();
+        $subject_point = $subject->where('id', $id)->with('students')->paginate(5);
+
+        return view('admin.subjects.view_point', compact('subject_point','id'));
+    }
+
+    public function exportPoint($id)
+    {
+
+        return new StudentsExport($id);
     }
 }
