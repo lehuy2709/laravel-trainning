@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuickAddRequest;
 use App\Http\Requests\StudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\Jobs\SendMailJob;
+use App\Mail\AutoSendMail;
 use App\Mail\SendMail;
+use App\Mail\SendMailSubjects;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
@@ -12,11 +16,14 @@ use App\Repositories\Faculty\FacultyRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Repositories\Subject\SubjectRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -36,7 +43,7 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
-        $students = $this->studentRepo->with(['subjects'])->Paginate();
+        $students = $this->studentRepo->StdLastRecordS();
         $faculties = $this->facultyRepo->getAll()->pluck('name', 'id');
         $subjects = $this->subjectRepo->count('*');
         $students = $this->studentRepo->search($request->all());
@@ -79,6 +86,26 @@ class StudentController extends Controller
         return redirect()->route('students.index');
     }
 
+    public function quickAdd(QuickAddRequest $request)
+    {
+        $data = $request->all();
+        $data['password'] = Hash::make('123123');
+        $createUser = $this->userRepo->create($data);
+        $idUser = $createUser->id;
+        $data['user_id'] = $idUser;
+        $user = $this->userRepo->find($idUser);
+        $user->assignRole('student');
+        $user->givePermissionTo('read');
+        $data['avatar'] = 'userdefault.png';
+        $this->studentRepo->create($data);
+        $mail = new SendMailJob($user);
+        dispatch($mail);
+
+        return response()->json([
+            'success' => "Create successfully"
+        ], 200);
+    }
+
     public function show($id)
     {
     }
@@ -94,11 +121,16 @@ class StudentController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateStudentRequest $request, $id)
     {
         $this->studentRepo->find($id)->update($request->all());
         $student = $this->studentRepo->find($id);
-        $facultyName = $student->faculty->name;
+
+        if (!empty($student->faculty->name)) {
+            $facultyName = $student->faculty->name;
+        } else {
+            $facultyName = "Unregistered";
+        }
 
         return response()->json(['data' => $student, 'facultyName' => $facultyName, 'student' => $request->all(), 'studentid' => $id, 'message' => 'Cập nhật thông tin sinh viên thành công'], 200);
     }
@@ -116,12 +148,9 @@ class StudentController extends Controller
         $data = $request->regSubjects;
 
         if (Auth::check()) {
-
             $user = Auth::user();
             $student = $this->studentRepo->whereByUserId($user->id);
-
             if ($data) {
-
                 foreach ($data as $value) {
                     $student->subjects()->attach($student->id, ['subject_id' => $value]);
                     Session::flash('success', 'Successfully registered for the course');
@@ -149,5 +178,61 @@ class StudentController extends Controller
         $subjectsPoint = $student->subjects;
 
         return response()->json(['data' => $subjectsPoint, 'subject_id' => $request->idSubject], 200);
+    }
+
+    public function autoSendMail()
+    {
+        $students = $this->studentRepo->with(['subjects'])->get();
+        $countSubject = $this->subjectRepo->count('id');
+
+        foreach ($students as $value) {
+            if ($value->subjects->count() == $countSubject) {
+                $listID[] = $value;
+            }
+        }
+
+        foreach ($listID as $value) {
+            for ($i = 0; $i < $countSubject; $i++) {
+                if (!$value->subjects[$i]->pivot->point) {
+                    break;
+                } elseif ($i == $countSubject - 1) {
+                    $avg = round($value->subjects[$i]->pivot->avg('point'));
+                    if ($avg < 5) {
+                        $sendMail = new AutoSendMail();
+                        Mail::to($value->email)->queue($sendMail);
+                    }
+                }
+            }
+        }
+        $avg = 0;
+    }
+
+    public function subjectDetail($id)
+    {
+        $subjectDetail = $this->studentRepo->with(['subjects'])->find($id);
+
+        return view('admin.students.subject_detail', compact('subjectDetail'))->render();
+    }
+
+    public function studentPoint(Request $request)
+    {
+        $dataPoint = $request->dataPoint;
+        if ($request->ajax()) {
+            $student = $this->studentRepo->find($request->id);
+            if ($student) {
+                for ($i = 0; $i < $student->count(); $i++) {
+                    if (isset($dataPoint[$i]) &&  $dataPoint[$i] !== null) {
+                        $student->subjects[$i]->pivot->update(
+                            ['point' => $dataPoint[$i]]
+                        );
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return response()->json([
+            'success' => "Update Successfully"
+        ]);
     }
 }

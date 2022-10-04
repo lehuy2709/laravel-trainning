@@ -1,12 +1,13 @@
 @extends('admin.layout.master')
-
-
-
 @role('admin')
-    @section('title', 'Manage Subjects')
-@section('content-title', 'Manage Subjects')
+    @section('title')
+        @lang('lg.title-subjects')
+    @endsection
+    @section('content-title')
+        @lang('lg.title-subjects')
+    @endsection
 @else
-@section('title', 'List Subjects')
+    @section('title', 'List Subjects')
 @section('content-title', 'List Subjects')
 @endrole
 
@@ -25,16 +26,16 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th> @lang('lg.subject-name')</th>
                 @role('student')
-                    <th>Point</th>
-                    <th>Status</th>
+                    <th>@lang('lg.student-point')</th>
+                    <th>@lang('lg.status')</th>
                 @endrole
                 @role('student')
-                <th><button class="btn btn-default btn-sm" id="check-all" type="button">Select All</button></th>
+                    <th><button class="btn btn-default btn-sm" id="check-all" type="button">@lang('lg.btn-select-all')</button></th>
                 @endrole
                 @role('admin')
-                <th>Action</th>
+                    <th>@lang('lg.action')</th>
                 @endrole
             </tr>
         </thead>
@@ -92,7 +93,7 @@
 </table>
 @role('student')
     <div style="text-align: right;color:white">
-        <button class="btn btn-success" id="register-all">Register</button>
+        <button class="btn btn-success" id="register-all">@lang('lg.btn-register')</button>
     </div>
 @endrole
 </form>

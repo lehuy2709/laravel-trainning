@@ -33,7 +33,7 @@
         <div class="form-inline">
             <form action="" method="GET">
                 <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                    <input class="form-control form-control-sidebar" type="search" placeholder="@lang('lg.search')"
                         aria-label="Search">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-sidebar">
@@ -56,7 +56,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-window-maximize"></i>
                             <p>
-                                Manage
+                                @lang('lg.manage')
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -64,19 +64,19 @@
                             <li class="nav-item">
                                 <a href="{{ Route('faculties.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Faculties</p>
+                                    @lang('lg.faculties')
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ Route('subjects.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Subjects</p>
+                                    @lang('lg.subjects')
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ Route('students.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Students</p>
+                                    @lang('lg.students')
                                 </a>
                             </li>
 
@@ -86,13 +86,13 @@
                     <li class="nav-item">
                         <a href="{{ Route('faculties.index') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Faculties</p>
+                            <p>@lang('lg.student-list-faculty')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ Route('subjects.index') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Subjects</p>
+                            <p>@lang('lg.student-list-subject')</p>
                         </a>
                     </li>
                 @endrole

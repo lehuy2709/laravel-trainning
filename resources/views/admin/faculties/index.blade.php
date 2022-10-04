@@ -3,11 +3,15 @@
 
 
 @role('admin')
-    @section('title', 'Manage Faculty')
-@section('content-title', 'Manage Faculty')
+    @section('title')
+        @lang('lg.title-faculties')
+    @endsection
+    @section('content-title')
+        @lang('lg.title-faculties')
+    @endsection
 @else
-@section('title', 'List Faculty')
-@section('content-title', 'List Faculty')
+    @section('title', __('lg.student-list-faculty'))
+@section('content-title', __('lg.student-list-faculty'))
 @endrole
 
 @section('content')
@@ -23,9 +27,16 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>@lang('lg.facu-name')</th>
             @role('admin')
-                <th>Action</th>
+                <th>@lang('lg.action')</th>
+            @endrole
+            @role('student')
+                @if (!$stdFaculty->faculty_id)
+                    <th>@lang('lg.action')</th>
+                @else
+                    <th>@lang('lg.status')</th>
+                @endif
             @endrole
         </tr>
     </thead>
@@ -43,13 +54,25 @@
                         {{ Form::button('<i class="fa fa-trash"></i>', ['class' => 'btn btn-danger btn-sm', 'id' => 'delete', 'data' => $item->id]) }}
                     </td>
                 @endrole
-            </tr>
-        @endforeach
-    </tbody>
+                @role('student')
+                    @if (!$stdFaculty->faculty_id)
+                        <td>
+                            {{ Form::open(['route' => ['registerFaculty', $item->id], 'method' => 'put']) }}
+                            {{ Form::button('<i class="fa fa-plus" style="color: white"></i>', ['class' => 'btn btn-success btn-sm', 'type' => 'submit']) }}
+                            {{ Form::close() }}
+                        </td>
+                    @else
+                        <td><span class="badge bg-info">Registed</span></td>
+                    @break
+                @endif
+            @endrole
+        </tr>
+    @endforeach
+</tbody>
 </table>
 
 <div>
-    {!! $faculties->links() !!}
+{!! $faculties->links() !!}
 </div>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

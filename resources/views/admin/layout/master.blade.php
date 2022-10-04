@@ -24,10 +24,10 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="../../index3.html" class="nav-link">Home</a>
+                    <a href="../../index3.html" class="nav-link">@lang('lg.home')</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="#" class="nav-link">@lang('lg.contact')</a>
                 </li>
             </ul>
 
@@ -41,8 +41,8 @@
                     <div class="navbar-search-block">
                         <form class="form-inline" method="GET" action="">
                             <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                    aria-label="Search" name="keyword">
+                                <input class="form-control form-control-navbar" type="search"
+                                    placeholder="@lang('lg.search')" aria-label="Search" name="keyword">
                                 <div class="input-group-append">
                                     <button class="btn btn-navbar" type="submit">
                                         <i class="fas fa-search"></i>
@@ -55,7 +55,6 @@
                         </form>
                     </div>
                 </li>
-
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
@@ -150,16 +149,29 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
+                        <i class="mdi mdi-earth"></i> {{ Config::get('languages')[App::getLocale()] }} </a>
+                    <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
+                        @foreach (Config::get('languages') as $lang => $language)
+                            @if ($lang != App::getLocale())
+                                <a class="dropdown-item" href="{{ route('lang.switch', $lang) }}"> {{ $language }}
+                                </a>
+                            @endif
+                        @endforeach
+                    </div>
+
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link"
-                    onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
-                    <i class="mdi mdi-logout"></i>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
+                        <i class="mdi mdi-logout"></i>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 </li>
 
             </ul>

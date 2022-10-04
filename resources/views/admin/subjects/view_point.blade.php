@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 
-@section('title', 'Manage Point')
-@section('content-title', 'Manage Point')
+@section('title', __('lg.manage-point'))
+@section('content-title', __('lg.manage-point'))
 
 
 @section('content')
@@ -11,8 +11,8 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Point</th>
+                <th>@lang('lg.student-all-name')</th>
+                <th>@lang('lg.student-point')</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div>
-                        <h4 class="modal-title">Import Points</h4>
+                        <h4 class="modal-title">@lang('lg.import-point')</h4>
                     </div>
                     <div>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -67,14 +67,15 @@
                         <div class="form-group">
                             <label class="filebutton">
                                 <span><input type="file" id="myfile" name="myfile" style=""
-                                        class="form-control form-control-sm"></span>
+                                        class="form-control"></span>
                             </label>
-                            <button type="submit" class="btn btn-primary btn-lg">Import</button>
+                            <button type="submit" class="btn btn-primary"
+                                style="margin-bottom:10px;">@lang('lg.btn-import-point')</button>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">@lang('lg.btn-close')</button>
                 </div>
             </div>
         </div>

@@ -1,8 +1,8 @@
 @extends('admin.layout.master')
 
-@section('title', 'Create Faculty')
+@section('title',  __('lg.title-subjects-create'))
 
-@section('content-title', isset($id) ? 'Update Subject' : 'Create Subject')
+@section('content-title', isset($id) ? __('lg.title-subjects-update') :  __('lg.title-subjects-create'))
 
 @section('content')
     @include('admin.layout.alert')
@@ -14,13 +14,13 @@
     @endif
 
     <div class="form-group">
-        {{ Form::label('name', 'Subject Name') }}
-        {{ Form::text('name', $subject->name, ['class' => 'form-control', 'placeholder' => 'Enter Name']) }}
+        {{ Form::label('name', __('lg.subject-name')) }}
+        {{ Form::text('name', $subject->name, ['class' => 'form-control', 'placeholder' => __('lg.subject-name')    ]) }}
     </div>
 
     <div style="margin-bottom:20px">
-        {{ Form::submit(isset($id) ? 'Save' : 'Create', ['class' => 'btn btn-primary']) }}
-        <a href="{{ Route('subjects.index') }}" class="btn btn-default">Back</a>
+        {{ Form::submit(isset($id) ?  __('lg.btn-save') :  __('lg.btn-create'), ['class' => 'btn btn-primary']) }}
+        <a href="{{ Route('subjects.index') }}" class="btn btn-default">@lang('lg.btn-back')</a>
     </div>
 
     {{ Form::close() }}

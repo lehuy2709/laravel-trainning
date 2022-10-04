@@ -18,7 +18,7 @@
             <div class="card card-profile shadow">
                 <div class="row justify-content-center">
                     <div class="col-lg-3 order-lg-2">
-                        <div class="card-profile-image" style="top:20px">
+                        <div class="card-profile-image" style="right:20px">
                             <a href="#">
                                 <img src="{{ asset('storage/images/students/' . $student->avatar) }}" class="rounded-circle"
                                     width="150px" />
@@ -28,20 +28,12 @@
                 </div>
 
                 <div class="card-body pt-0 pt-md-4">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col">
                             <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                                <div>
-                                    <button type="submit" name="edit" data-toggle="modal" data-target="#edit_data_Modal"
-                                        class="btn btn-primary btn-sm"><i class="fa fa-upload"> </i></button>
-                                </div>
-                                <div>
-                                    <span class="heading">89</span>
-                                    <span class="description">Comments</span>
-                                </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="text-center">
                         <h3>
                             {{ $student->name }}<span class="font-weight-light"></span>
@@ -71,7 +63,7 @@
                 <div class="card-header bg-white border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">My account</h3>
+                            <h3 class="mb-0">@lang('lg.profile')</h3>
                         </div>
                         {{-- <div class="col-4 text-right">
                             <a href="#!" class="btn btn-sm btn-primary">Settings</a>
@@ -86,7 +78,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="input-username">Full Name</label>
+                                        <label class="form-control-label" for="input-username">@lang('lg.fullName')</label>
                                         <input type="text" id="input-username"
                                             class="form-control form-control-alternative" value="{{ $student->name }}"
                                             readonly />
@@ -106,6 +98,10 @@
                                         <input type="file" id="input-username"
                                             class="form-control form-control-alternative" name="avatar" />
                                     </div>
+                                    <div>
+                                        <img src="{{ asset('storage/images/students/' . $student->avatar) }}"
+                                            class="rounded-circle" width="150px" />
+                                    </div>
                                     @error('avatar')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -123,7 +119,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="input-address">Address</label>
+                                        <label class="form-control-label" for="input-address">@lang('lg.student-address')</label>
                                         <input id="input-address" class="form-control form-control-alternative"
                                             value="{{ $student->address }}" type="text" readonly />
                                     </div>
@@ -133,7 +129,7 @@
                         <hr class="my-4" />
                         <!-- Description -->
                         <div style="text-align: right">
-                            <button href="#!" class="btn btn-primary">Save</button>
+                            <button href="#!" class="btn btn-primary">@lang('lg.btn-save')</button>
                         </div>
 
                     </form>
@@ -157,7 +153,8 @@
                 </div>
                 <div class="modal-body">
 
-                    <form action="" method="post" enctype="multipart/form-data" class="mr-auto p-2" id="edit_form">
+                    <form action="" method="post" enctype="multipart/form-data" class="mr-auto p-2"
+                        id="edit_form">
                         @csrf
                         <div class="form-group">
                             <label class="filebutton">
@@ -177,7 +174,9 @@
     </div>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
 
@@ -190,9 +189,6 @@
 
             $('#edit_form').submit(function(e) {
                 e.preventDefault();
-                // console.log(new FormData(this)
-                // console.log(form);
-
                 $.ajax({
                     url: "{{ route('changeAvatar') }}",
                     type: 'POST',

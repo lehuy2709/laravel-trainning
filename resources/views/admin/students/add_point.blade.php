@@ -35,6 +35,7 @@
                     <tr id="tr-point">
                         <td>
                             <select name="subject" id="subject" class="form-control">
+                                <option value="">Choose Subject...</option>
                                 @foreach ($subjects as $value)
                                     <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
@@ -69,6 +70,7 @@
                     <tr id="tr-point">
                         <td>
                             <select name="subject" id="subject" class="form-control">
+                                <option value="">Choose Subject...</option>
                                 @foreach ($subjects as $value)
                                     <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
@@ -82,78 +84,47 @@
                         </td>
                     </tr>
                     `)
-                    var row = $(".point")
-                    // console.log(row);
-                    var a = document.querySelectorAll('#subject')
-                    for(i=0;i<a.length;i++){
-                        if(a.length>=0){
-
-                    a[i].onchange = function(e){
-                        e.preventDefault()
-                        let value = $(this).val();
-                let idStudent = {{ $student->id}};
-                $.ajax({
-                    url: "{{ route('getValueSubject',"value") }}",
-                    method: 'GET',
-                    data: {
-                        idSubject : value,
-                        idStudent:idStudent
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        data.data.map(function(res){
-                            console.log(res);
-                            console.log(data.subject_id);
-                            if(res.pivot.subject_id == data.subject_id){
-                                for( i=0; i<row.length; i++){
-                                    row[i].value = res.pivot.point
-                                    break
-                                }
-                            }
-                        })
-                    }
                 });
 
-                    }
-
-                    }
-                    }
-
-
+                // $('select[name="subject"]').on('change', function() {
+                //         alert( this.value );
+                // });
+                $('select[name="subject"]').first().on('change', function() {
+                        alert( this.value );
                 });
+                for(i=0;i< $('select[name="subject"]').length;i++){
+                    console.log($('select[name="subject"]')[i]);
+                }
 
-            //     $('select[name="subject"]').change(function(e) {
-            //         e.preventDefault()
-            //     let value = $(this).val();
-            //     let idStudent = {{ $student->id}};
-            //     $.ajax({
-            //         url: "{{ route('getValueSubject',"value") }}",
-            //         method: 'GET',
-            //         data: {
-            //             idSubject : value,
-            //             idStudent:idStudent
-            //         },
-            //         success: function(data) {
-            //             data.data.map(function(res){
-            //                 if(res.pivot.subject_id == data.subject_id){
-            //                     $('input[name="point"]').val(res.pivot.point)
-            //                 }
-            //             })
-            //         }
-            //     });
-
-            // });
-
-
-
-
-
-
-
+                console.log(  $('select[name="subject"]').first());
 
         });
 
 
+    </script>
+    <script>
+
+        // $('select[name="subject"]').change(function(e) {
+        //             e.preventDefault()
+        //         let value = $(this).val();
+        //         let idStudent = {{ $student->id}};
+        //         $.ajax({
+        //             url: "{{ route('getValueSubject',"value") }}",
+        //             method: 'GET',
+        //             data: {
+        //                 idSubject : value,
+        //                 idStudent:idStudent
+        //             },
+        //             success: function(data) {
+        //                 data.data.map(function(res){
+        //                     if(res.pivot.subject_id == data.subject_id){
+        //                         $('input[name="point"]').val(res.pivot.point)
+        //                     }
+        //                 })
+        //             }
+        //         });
+
+        //     });
     </script>
 
 

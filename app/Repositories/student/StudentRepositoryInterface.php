@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Repositories\Student;
+
 use App\Repositories\RepositoryInterface;
 
 interface StudentRepositoryInterface extends RepositoryInterface
@@ -11,4 +13,7 @@ interface StudentRepositoryInterface extends RepositoryInterface
     public function getStudents();
 
     public function whereByUserId($id);
+
+    public function StdLastRecordS();
+
 }
