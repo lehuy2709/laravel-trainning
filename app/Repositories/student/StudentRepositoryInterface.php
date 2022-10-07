@@ -16,4 +16,6 @@ interface StudentRepositoryInterface extends RepositoryInterface
 
     public function StdLastRecordS();
 
+    public function whereByFaculty($id);
+
 }

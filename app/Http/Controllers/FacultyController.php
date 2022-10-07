@@ -129,6 +129,10 @@ class FacultyController extends Controller
 
     public function destroy($id)
     {
+        $students = $this->studentRepo->whereByFaculty($id);
+        $studentId = $students->pluck('id');
+        $student = $this->studentRepo->newModel();
+        $student->whereIn('id', $studentId)->update(['faculty_id' => null]);
         $this->facultyRepo->delete($id);
         Session::flash('success', 'Faculty has successfully updated.');
 

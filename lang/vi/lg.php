@@ -55,7 +55,9 @@ return [
     'create-faculty-success' => 'Tạo mới khoa thành công',
     'home' => 'Trang Chủ',
     'contact' => 'Liên Hệ',
-
-
-
+    'fromAge' => "Từ ... Tuổi",
+    'toAge' => "Đến ... Tuổi",
+    'fromPoint' => "Từ ... Điểm",
+    'toPoint' => "Đến ... Điểm",
+    'btn-confirm' => "Bạn có chắc chắn ?"
 ];

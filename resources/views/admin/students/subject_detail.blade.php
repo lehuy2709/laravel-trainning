@@ -12,7 +12,7 @@
             @if ($subject->pivot->point)
                 {
                 <td><input type="number" name="point" id="point" class="form-control"
-                        value="{{ $subject->pivot->point }}"></td>
+                        value="{{ $subject->pivot->point  }}"></td>
                 }
             @else
                 <td><input type="number" name="point" id="point" value="" class="form-control"></td>

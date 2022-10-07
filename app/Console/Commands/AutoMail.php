@@ -37,10 +37,10 @@ class AutoMail extends Command
         foreach ($students as $student) {
             if ($student->subjects->count() ==  $countSubject) {
                 for ($i = 0; $i <  $countSubject; $i++) {
-                    if (!$student->subjects[$i]->pivot->point) {
+                    if ($student->subjects[$i]->pivot->point === null) {
                         break;
                     } elseif ($i ==  $countSubject - 1) {
-                        $avg = $student->subjects->avg('pivot.point', 2);
+                        $avg = $student->subjects->avg('pivot.point');
                         if ($avg < 5) {
                             $mailable = new AutoSendMail();
                             Mail::to($student->email)->queue($mailable);

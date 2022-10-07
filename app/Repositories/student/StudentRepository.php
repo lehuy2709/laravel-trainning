@@ -82,4 +82,9 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     {
         return $this->model->with('subjects')->orderByRaw("updated_at DESC, created_at DESC")->paginate(5);
     }
+
+    public function whereByFaculty($id)
+    {
+        return $this->model->where('faculty_id', $id)->get();
+    }
 }

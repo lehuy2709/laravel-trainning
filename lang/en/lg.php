@@ -56,14 +56,9 @@ return [
     'create-faculty-success' => 'Faculty has been created successfully.',
     'home' => 'Home',
     'contact' => 'Contact',
-
-
-
-
-
-
-
-
-
-
+    'fromAge' => "From Age",
+    'toAge' => "To Age",
+    'fromPoint' => "From Point",
+    'toPoint' => "To Point",
+    'btn-confirm' => "Are you sure"
 ];

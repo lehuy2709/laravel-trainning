@@ -5,8 +5,6 @@
 
 @section('content')
     @include('admin.layout.alert')
-
-
     <div class="card-header py-3">
         <h3 class="m-1 font-weight-bold text-primary">Register the subject</h3>
         <h4 class="m-1 text-dark">Student: {{ $student->name }} </h4>
@@ -103,7 +101,6 @@
 
     </script>
     <script>
-
         // $('select[name="subject"]').change(function(e) {
         //             e.preventDefault()
         //         let value = $(this).val();
@@ -126,6 +123,4 @@
 
         //     });
     </script>
-
-
 @endsection

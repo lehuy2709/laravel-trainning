@@ -193,7 +193,7 @@ class StudentController extends Controller
 
         foreach ($listID as $value) {
             for ($i = 0; $i < $countSubject; $i++) {
-                if (!$value->subjects[$i]->pivot->point) {
+                if ($value->subjects[$i]->pivot->point === null) {
                     break;
                 } elseif ($i == $countSubject - 1) {
                     $avg = round($value->subjects[$i]->pivot->avg('point'));
@@ -205,6 +205,36 @@ class StudentController extends Controller
             }
         }
         $avg = 0;
+
+        $students = Student::where('user_id', '!=', 1)->with('subjects')->get();
+        $subject = new Subject();
+        $listStudentLearned = [];
+        $listStudentFullMark = [];
+        foreach ($students as $student) {
+            if ($student->subjects->count() === $subject->count()) {
+                $listStudentLearned[] = $student;
+            }
+        }
+        foreach ($listStudentLearned as $value) {
+            for ($i = 0; $i < $subject->count(); $i++) {
+                if ($value->subjects[$i]->pivot->mark === null) {
+                    break;
+                } elseif ($i == $subject->count() - 1) {
+                    $listStudentFullMark[] = $value;
+                }
+            }
+        }
+
+        $result = '';
+        foreach ($listStudentFullMark as $student) {
+            if ($student->subjects->avg('pivot.mark') > 5) {
+                $result = 'OK';
+            } else {
+                $result = 'Thôi học';
+            }
+            // Mail::to($student->email)->queue(new AlertMarkMail($result, $student->subjects->avg('pivot.mark')));
+        }
+        return 0;
     }
 
     public function subjectDetail($id)

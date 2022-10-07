@@ -15,10 +15,10 @@
         <h3> <i>@lang('lg.search-age')</i> </h3>
         <div class="input-group">
             <div class="form-group" style="margin-right:10px">
-                <input type="search" name="fromAge" id="form1" placeholder="From Age" class="form-control" />
+                <input type="search" name="fromAge" id="form1" placeholder="@lang('lg.fromAge')" class="form-control" />
             </div>
             <div class="form-group" style="margin:0 10px;">
-                <input type="search" name="toAge" id="form1" placeholder="To Age" class="form-control" />
+                <input type="search" name="toAge" id="form1" placeholder="@lang('lg.toAge')" class="form-control" />
             </div>
             <div class="form-group" style="margin:0 10px;">
                 <button type="submit" class="btn btn-info">
@@ -32,10 +32,11 @@
         <h3> <i>@lang('lg.search-point')</i> </h3>
         <div class="input-group">
             <div class="form-group" style="margin-right:10px">
-                <input type="search" name="fromPoint" id="form1" placeholder="From Point" class="form-control" />
+                <input type="search" name="fromPoint" id="form1" placeholder="@lang('lg.fromPoint')"
+                    class="form-control" />
             </div>
             <div class="form-group" style="margin:0 10px;">
-                <input type="search" name="toPoint" id="form1" placeholder="To Point" class="form-control" />
+                <input type="search" name="toPoint" id="form1" placeholder="@lang('lg.toPoint')" class="form-control" />
             </div>
             <div class="form-group" style="margin:0 10px;">
                 <button type="submit" class="btn btn-info">
